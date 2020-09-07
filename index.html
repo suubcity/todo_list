@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To Do List</title>
+  </head>
+  <body>
+    <div id="containerTop">
+      <div id="container2">
+        <h2 id="header">To Do List</h2>
+        <!-- todo section  -->
+        <div id="todoContainer">
+          <div class="todo">
+            <nav class="todoNav">
+              <div>
+                <img
+                  class="todoNavButton doneButton"
+                  src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511973/Icons/035-check-1_w6twiu.png"
+                  alt="Tick"
+                />
+              </div>
+
+              <div>
+                <img
+                  class="todoNavButton editButton"
+                  src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511971/Icons/020-edit_lwkmwt.png"
+                  alt="Edit"
+                />
+              </div>
+              <div>
+                <img
+                  class="todoNavButton infoButton"
+                  src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599514254/Icons/info_q23uvm.png"
+                  alt="Information"
+                />
+              </div>
+            </nav>
+
+            <div class="todoInner">
+              <h2 class="todoInfo title">Go shopping for a rad new tiger.</h2>
+              <h5 class="todoInfo due">Due: 24/05/2022</h5>
+              <h5 class="todoInfo priority">Priority: High</h5>
+              <h5 class="todoInfo dateAdded">Added: 20/01/1999</h5>
+              <h5 class="todoInfo project">Project: Work</h5>
+            </div>
+          </div>
+        </div>
+        <!-- form section  -->
+        <div id="formContainer">
+          <label for="title">Title</label><br />
+          <input id="titleInput" name="title" type="text" />
+          <br />
+          <label>Project</label><br />
+          <input id="Project" type="text" />
+          <br />
+          <label for="dueDate">Due Date</label><br />
+          <input id="dueDate" name="dueDate" type="date" />
+          <br />
+          <label for="priority">Priority</label><br />
+          <select id="priority" name="priority">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+          <br />
+          <label>Notes</label><br />
+          <textarea rows="10" cols="30"></textarea>
+          
+        </div>
+      </div>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
