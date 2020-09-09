@@ -86,29 +86,145 @@ body {
 #container2 {
   margin: auto;
   background: rgba(243, 243, 243, 0.5);
-  height: 100vh;
+  height: auto;
   border-radius: 0 2rem 0 0;
   max-width: 800px;
+  min-height: 93vh;
+  
 }
 
 #header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 1rem;
   border-radius: 0 2rem 0 0;
   color: black;
   background: rgba(220, 220, 220, 0.52);
 }
 
+.button {
+  padding: 0.2rem;
+  width: 1.5rem;
+  height: auto;
+  cursor: pointer;
+  filter: invert(0);
+  transition: filter 0.5s;
+  opacity: 0.65;
+}
+
+.button:hover {
+  filter: invert(1);
+}
+
+@media only screen and (min-width: 600px) {
+  .title {
+    font-size: 1.5rem;
+  }
+  .button {
+    width: 2rem;
+    height: auto;
+  }
+}
+
+.redGlow {
+  transition: filter 0.5s;
+  opacity: 0.65;
+}
+
+.redGlow:hover {
+  filter: invert(1) drop-shadow(0px 0px 5px red);
+}
+
 /* #endregion main page  */
 
-/* #region todo  */
+/* #region deletePage  */
+#deletePage {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  /* display: none; */
+}
 
-#todoContainer {
-  display: none;
+#deleteMessage {
+  padding: 1rem;
+  /* background: rgba(255, 13, 13, 0.3); */
+}
+p {
+  font-size: 1.5rem;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+#deletePageNav {
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  width: 100%;
+  /* background-color: rgba(0, 0, 0, 0.3); */
+  display: flex;
+  justify-content: space-between;
+  background: rgb(0, 0, 0.3);
+  background: -moz-linear-gradient(
+    90deg,
+    rgba(19, 255, 0, 0.3) 0%,
+    rgba(255, 0, 0, 0.3) 100%
+  );
+  background: -webkit-linear-gradient(
+    90deg,
+    rgba(19, 255, 0, 0.3) 0%,
+    rgba(255, 0, 0, 0.3) 100%
+  );
+  background: linear-gradient(
+    90deg,
+    rgba(19, 255, 0, 0.3) 0%,
+    rgba(255, 0, 0, 0.3) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#13ff00",endColorstr="#ff0000",GradientType=1);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#13ff00",endColorstr="#ff0000",GradientType=1);
+}
+
+/* #endregion deletePage */
+
+/* #region notesPage */
+#notesPage {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+}
+
+#notes {
+  padding: 1rem;
+}
+
+#notes > * {
+  padding: 0.5rem 0;
+}
+
+#notesNav {
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+/* #endregion notesPage */
+
+/* #region todoPage  */
+
+#todoPage {
+  /* display: none; */
 }
 
 .todo {
-  
-  background: rgba(0, 0, 0, 0.1);
+  background-color: rgba(100, 6, 6, 0.1);
   display: flex;
   margin: 0 0 0.2rem 0;
 }
@@ -117,23 +233,10 @@ body {
   flex-basis: 7rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   padding: 1rem;
   /* border: 1px solid black; */
-}
-
-.todoNavButton {
-  padding: 0.2rem;
-  width: 1.5rem;
-  cursor: pointer;
-  filter: invert(1);
-  transition: filter 0.5s;
-}
-
-.todoNavButton:hover {
-  
-  filter: invert(0);
 }
 
 .todoInner {
@@ -145,15 +248,8 @@ body {
   align-content: stretch;
 }
 
-.deleteButton {
-  position: absolute;
-  top: 0.4rem;
-  left: 0.3rem;
-  text-align: left;
-}
-
 .todoInfo {
-  padding: 0.2rem 0.5 0.2rem 0.5rem;
+  padding: 0.2rem 0.4rem;
   text-align: left;
 }
 
@@ -168,31 +264,97 @@ body {
   background: rgba(255, 13, 13, 0.3);
 }
 
-@media only screen and (min-width: 600px) {
-  .title {
-    font-size: 1.5rem;
-  }
+/* #endregion to do  */
+
+/* #region compleatedTodosPage  */
+
+#compleatedTodosPage {
+  /* display: none; */
+
+  text-decoration: line-through;
 }
 
+hr {
+  border: 0;
+  height: 1px;
+  background: #333;
+}
 
-/* #endregion todo  */
+.deleteDoneButton {
+  transition: filter 0.5s;
+  opacity: 0.65;
+}
 
-/* #region form  */
-#formContainer {
+.deleteDoneButton:hover {
+  filter: invert(1) drop-shadow(0px 0px 5px red);
+}
+
+/* #endregion compleatedTodos */
+
+/* #region formPage  */
+#editPage {
+  /* display: none; */
+  margin: auto;
   padding: 1rem;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
+#formContainer {
+  padding: 0.4rem 0;
+
+  line-height: 1.5rem;
+}
+
+#editPageNav {
+  /* background: rgba(0, 0, 0, 0.1); */
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 1.2rem;
+  background: rgb(0, 0, 0.3);
+  background: -moz-linear-gradient(
+    90deg,
+    rgba(19, 255, 0, 0.3) 0%,
+    rgba(255, 0, 0, 0.3) 100%
+  );
+  background: -webkit-linear-gradient(
+    90deg,
+    rgba(19, 255, 0, 0.3) 0%,
+    rgba(255, 0, 0, 0.3) 100%
+  );
+  background: linear-gradient(
+    90deg,
+    rgba(19, 255, 0, 0.3) 0%,
+    rgba(255, 0, 0, 0.3) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#13ff00",endColorstr="#ff0000",GradientType=1);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#13ff00",endColorstr="#ff0000",GradientType=1);
+}
 input,
 textarea,
 select {
   background-color: rgba(0, 0, 0, 0.3);
   color: white;
   border: none;
-  padding: .3rem;
+  padding: 0.3rem;
   width: 100%;
-
 }
 
+.buttonContainer {
+  padding: 0.5rem;
+}
 
+#saveButton {
+  transition: filter 0.5s;
+  opacity: 0.65;
+}
+
+#saveButton:hover {
+  filter: invert(1) drop-shadow(0px 0px 5px rgba(0, 97, 0, 0.822));
+}
 
 /* #endregion form  */

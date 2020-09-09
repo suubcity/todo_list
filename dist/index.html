@@ -8,14 +8,66 @@
   <body>
     <div id="containerTop">
       <div id="container2">
-        <h2 id="header">To Do List</h2>
-        <!-- todo section  -->
-        <div id="todoContainer">
+        <div id="header">
+          <h2>To Do List</h2>
+          <img
+            class="button"
+            src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511974/Icons/049-add_n0pkra.png"
+            alt="Add button"
+          />
+        </div>
+
+        <!-- deletePage  -->
+        <div id="deletePage">
+          <div id="deleteMessage">
+            <p>Are you sure you want to delete,</p>
+            <p id="todoNameDeleteMessage" class="bold">Buy cat food</p>
+            <p>from your todo list?</p>
+            <nav id="deletePageNav">
+              <img
+                class="button"
+                src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599600615/Icons/return_hitifz.png"
+                alt="Back button"
+              />
+              <img
+                class="button redGlow"
+                src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511969/Icons/005-trash_kbzvla.png"
+                alt="Delete button"
+              />
+            </nav>
+          </div>
+        </div>
+
+        <!-- notes page  -->
+        <div id="notesPage">
+          <div id="notes">
+            <nav id="notesNav">
+              <img
+                class="button"
+                src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599600615/Icons/return_hitifz.png"
+                alt="Back button"
+              />
+              <img
+                class="button editButton"
+                src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511971/Icons/020-edit_lwkmwt.png"
+                alt="Edit"
+              />
+            </nav>
+            <h2>Notes</h2>
+
+            <h2 class="bold">Pick up food.</h2>
+            <p>Got to be there early because picking up kids later.</p>
+          </div>
+        </div>
+
+        <!-- to do section  -->
+
+        <div id="todoPage">
           <div class="todo">
             <nav class="todoNav">
               <div>
                 <img
-                  class="todoNavButton doneButton"
+                  class="button doneButton"
                   src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511973/Icons/035-check-1_w6twiu.png"
                   alt="Tick"
                 />
@@ -23,14 +75,14 @@
 
               <div>
                 <img
-                  class="todoNavButton editButton"
+                  class="button editButton"
                   src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511971/Icons/020-edit_lwkmwt.png"
                   alt="Edit"
                 />
               </div>
               <div>
                 <img
-                  class="todoNavButton infoButton"
+                  class="button infoButton"
                   src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599514254/Icons/info_q23uvm.png"
                   alt="Information"
                 />
@@ -46,27 +98,93 @@
             </div>
           </div>
         </div>
+
+        <!-- compleated todos  -->
+
+        <div id="compleatedTodosPage">
+          <hr />
+          <div class="todo">
+            <nav class="todoNav">
+              <div>
+                <img
+                  class="button returnButton"
+                  src="https://res.cloudinary.com/dli7mlkdu/image/upload/a_90/v1599600615/Icons/return_hitifz.png"
+                  alt="Return Todo"
+                />
+              </div>
+
+              <div>
+                <img
+                  class="button redGlow"
+                  src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511969/Icons/005-trash_kbzvla.png"
+                  alt="Delete"
+                />
+              </div>
+            </nav>
+
+            <div class="todoInner">
+              <h2 class="todoInfo title">Go shopping for a rad new tiger.</h2>
+              <h5 class="todoInfo due">Due: 24/05/2022</h5>
+              <h5 class="todoInfo priority">Priority: High</h5>
+              <h5 class="todoInfo dateAdded">Added: 20/01/1999</h5>
+              <h5 class="todoInfo project">Project: Work</h5>
+            </div>
+          </div>
+        </div>
+
         <!-- form section  -->
-        <div id="formContainer">
-          <label for="title">Title</label><br />
-          <input id="titleInput" name="title" type="text" />
-          <br />
-          <label>Project</label><br />
-          <input id="Project" type="text" />
-          <br />
-          <label for="dueDate">Due Date</label><br />
-          <input id="dueDate" name="dueDate" type="date" />
-          <br />
-          <label for="priority">Priority</label><br />
-          <select id="priority" name="priority">
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-          <br />
-          <label>Notes</label><br />
-          <textarea rows="10" cols="30"></textarea>
-          
+
+        <div id="editPage">
+          <nav id="editPageNav">
+            <div class="buttonContainer">
+              <img
+                id="saveButton"
+                class="button"
+                src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599596182/Icons/disk_m0lsf9.png"
+                alt="Save Button"
+              />
+            </div>
+            <div class="buttonContainer">
+              <img
+                id="editPagedeleteButton"
+                class="button redGlow"
+                src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511969/Icons/005-trash_kbzvla.png"
+                alt="Delete Button"
+              />
+            </div>
+          </nav>
+          <div id="formContainer">
+            <label for="title">Title *</label><br />
+            <input id="titleInput" name="title" type="text" />
+            <br />
+
+            <label>Project</label><br />
+
+            <select id="project" name="project">
+              <option value="" disabled selected>
+                Select Existing Project
+              </option>
+              <option value="School">School</option>
+              <option value="Work">Work</option>
+            </select>
+            <label for="addNewProject">Create New Project</label>
+            <input id="addNewProjectInput" name="addNewProject" type="text" />
+
+            <br />
+            <label for="dueDate">Due Date</label><br />
+            <input id="dueDate" name="dueDate" type="date" />
+            <br />
+            <label for="priority">Priority</label><br />
+            <select id="priority" name="priority">
+              <option value="low">...</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+            <br />
+            <label>Notes</label><br />
+            <textarea rows="10" cols="30"></textarea>
+          </div>
         </div>
       </div>
     </div>
