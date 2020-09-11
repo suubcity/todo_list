@@ -90,7 +90,6 @@ body {
   border-radius: 0 2rem 0 0;
   max-width: 800px;
   min-height: 93vh;
-  
 }
 
 #header {
@@ -139,7 +138,7 @@ body {
 /* #endregion main page  */
 
 /* #region deletePage  */
-#deletePage {
+.deletePage {
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -149,20 +148,19 @@ body {
   /* display: none; */
 }
 
-#deleteMessage {
+.deleteMessage {
   padding: 1rem;
   /* background: rgba(255, 13, 13, 0.3); */
 }
+
 p {
   font-size: 1.5rem;
 }
 
-.bold {
-  font-weight: bold;
-}
 
-#deletePageNav {
-  padding: 0.5rem 1rem;
+
+.deletePageNav {
+  padding: 0.2rem 0.5rem;
   margin-top: 1rem;
   width: 100%;
   /* background-color: rgba(0, 0, 0, 0.3); */
@@ -209,7 +207,7 @@ p {
 }
 
 #notesNav {
-  padding: 1rem;
+  padding: 0.2rem 0.5rem;
   background-color: rgba(0, 0, 0, 0.1);
   width: 100%;
   display: flex;
@@ -221,6 +219,42 @@ p {
 
 #todoPage {
   /* display: none; */
+}
+
+#todoNavTop {
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
+  flex-wrap: wrap;
+  background: rgba(220, 220, 220, 0.52);
+}
+#todoNavTop > * {
+  padding: .2rem .5rem;
+}
+
+.sortButton {
+  cursor: pointer;
+  font-weight: 100;
+  
+}
+
+.sortButton:hover {
+  font-weight: bold;
+}
+
+#displayByProject {
+  padding-left: 1rem;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+#displayByProjectSelect {
+  margin-left: 1rem;
+  height: auto;
+  width: auto;
 }
 
 .todo {
@@ -270,14 +304,30 @@ p {
 
 #compleatedTodosPage {
   /* display: none; */
-
-  text-decoration: line-through;
 }
 
 hr {
   border: 0;
   height: 1px;
   background: #333;
+  margin: 1rem 0;
+}
+
+#clearCompleatedTodosNav {
+  background: rgba(220, 220, 220, 0.52);
+  padding: 0.2rem 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: auto;
+}
+
+#clearCompleatedTodosNav > * {
+  margin: 0 1rem 0 0;
+}
+
+.compleatedTodo {
+  text-decoration: line-through;
 }
 
 .deleteDoneButton {
@@ -291,8 +341,8 @@ hr {
 
 /* #endregion compleatedTodos */
 
-/* #region formPage  */
-#editPage {
+/* #region addEditPage  */
+#addEditPage {
   /* display: none; */
   margin: auto;
   padding: 1rem;
@@ -309,29 +359,33 @@ hr {
   line-height: 1.5rem;
 }
 
-#editPageNav {
+#addEditPageNav {
   /* background: rgba(0, 0, 0, 0.1); */
   width: 100%;
+  padding: 0.2rem 0.5rem;
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem 1.2rem;
+
   background: rgb(0, 0, 0.3);
+
   background: -moz-linear-gradient(
     90deg,
     rgba(19, 255, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.3) 49%,
     rgba(255, 0, 0, 0.3) 100%
   );
   background: -webkit-linear-gradient(
     90deg,
     rgba(19, 255, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.3) 49%,
     rgba(255, 0, 0, 0.3) 100%
   );
   background: linear-gradient(
     90deg,
     rgba(19, 255, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.3) 49%,
     rgba(255, 0, 0, 0.3) 100%
   );
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#13ff00",endColorstr="#ff0000",GradientType=1);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#13ff00",endColorstr="#ff0000",GradientType=1);
 }
 input,
@@ -345,7 +399,6 @@ select {
 }
 
 .buttonContainer {
-  padding: 0.5rem;
 }
 
 #saveButton {
@@ -358,3 +411,13 @@ select {
 }
 
 /* #endregion form  */
+
+/* css toggles  */
+
+.bold {
+  font-weight: bold;
+}
+
+.hide {
+  display: none !important;
+};
