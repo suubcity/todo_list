@@ -2,14 +2,14 @@
 
 
 
-<!-- click add button -->
-displayPage(editpage)
+
+
 <!-- when add page load -->
 populate the project selector
 
 
 <!-- delete page -->
-populate id="todoNameDeleteMessage" with array[title]
+
 back button return toaddEditPage 
 delete button {
     returns to main page
@@ -68,18 +68,18 @@ info button {
 
 <!-- addeditpage  -->
 save button {
-    return to home page
+    
     get data from form
     update the array obj
     clear form
 }
 back button {
-    returns to main page
+    
     clears form
 }
 
 delete button {
-    displays deletepage
+  populate id="todoNameDeleteMessage" with array[title]
 }
 
 
