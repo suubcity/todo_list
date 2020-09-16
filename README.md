@@ -89,26 +89,7 @@ delete button {
 <!-- array manipulation  module-->
 store the todo list in an  object.
 
-create a factory to make each todo list entry
 
-let todoArray = [
- {
-     "title": string
-     "project": string
-     "dueDate": date
-     "priority": string
-     "notes": string
-     compleated: boolean
-     what funnctions on the object??
- },
-  {
-     "title":
-     "project":
-     "dueDate":
-     "priorit":
-     "notes":
- }
-]
 
 <!-- dom manipulation -->
 function that manages the display of things, only one page can be displayed at once. 
@@ -142,3 +123,66 @@ edit todo
 add
 
 
+
+
+
+   <div class="todo">
+            <nav class="todoNav">
+              <img
+                class="button doneButton"
+                src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511973/Icons/035-check-1_w6twiu.png"
+                alt="Tick"
+              />
+
+              <img
+                class="button editButton"
+                src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511971/Icons/020-edit_lwkmwt.png"
+                alt="Edit"
+              />
+
+              <img
+                class="button infoButton"
+                src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599514254/Icons/info_q23uvm.png"
+                alt="Information"
+              />
+            </nav>
+
+            <div class="todoInner">
+              <h2 class="todoInfo title">Go shopping for a rad new tiger.</h2>
+              <h5 class="todoInfo due">Due: 24/05/2022</h5>
+              <h5 class="todoInfo priority">Priority: High</h5>
+              <h5 class="todoInfo dateAdded">Added: 20/01/1999</h5>
+              <h5 class="todoInfo project">Project: Work</h5>
+            </div>
+          </div>
+          <!-- compleated todos  -->
+          <div id="compleatedTodosPage">
+            <hr />
+            <nav id="clearCompleatedTodosNav">
+              <h2>Clear completed</h2>
+              <img
+                class="button redGlow"
+                src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511969/Icons/005-trash_kbzvla.png"
+                alt="Delete"
+              />
+            </nav>
+            <div class="todo compleatedTodo">
+              <nav class="todoNav">
+                <div>
+                  <img
+                    class="button returnButton"
+                    src="https://res.cloudinary.com/dli7mlkdu/image/upload/a_90/v1599600615/Icons/return_hitifz.png"
+                    alt="Return Todo"
+                  />
+                </div>
+              </nav>
+
+              <div class="todoInner">
+                <h2 class="todoInfo title">Go shopping for a rad new tiger.</h2>
+                <h5 class="todoInfo due">Due: 24/05/2022</h5>
+                <h5 class="todoInfo priority">Priority: High</h5>
+                <h5 class="todoInfo dateAdded">Added: 20/01/1999</h5>
+                <h5 class="todoInfo project">Project: Work</h5>
+              </div>
+            </div>
+          </div>

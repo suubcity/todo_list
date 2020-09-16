@@ -157,8 +157,6 @@ p {
   font-size: 1.5rem;
 }
 
-
-
 .deletePageNav {
   padding: 0.2rem 0.5rem;
   margin-top: 1rem;
@@ -230,13 +228,12 @@ p {
   background: rgba(220, 220, 220, 0.52);
 }
 #todoNavTop > * {
-  padding: .2rem .5rem;
+  padding: 0.2rem 0.5rem;
 }
 
 .sortButton {
   cursor: pointer;
   font-weight: 100;
-  
 }
 
 .sortButton:hover {
@@ -274,6 +271,7 @@ p {
 }
 
 .todoInner {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   padding: 1rem 1rem 0.5rem 1rem;
@@ -410,6 +408,9 @@ select {
   filter: invert(1) drop-shadow(0px 0px 5px rgba(0, 97, 0, 0.822));
 }
 
+#addEditBackButton {
+}
+
 /* #endregion form  */
 
 /* css toggles  */
@@ -420,4 +421,4 @@ select {
 
 .hide {
   display: none !important;
-};
+}
