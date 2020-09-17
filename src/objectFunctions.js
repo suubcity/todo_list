@@ -1,3 +1,5 @@
+// import { format } from 'date-fns';
+
 //this module can get all the data from the form and create the object and edit it
 export let todoArray = [
   {
@@ -5,7 +7,7 @@ export let todoArray = [
     project: "Home",
     dueDate: "2020-09-18",
     dateAdded: "2020-09-18",
-    priority: "medium",
+    priority: "low",
     notes: "Do it now!",
     completed: true,
     toggleComplete: function () {
@@ -72,6 +74,7 @@ const todoFactory = () => {
     project: addNewProjectInput.value || selectProject.value,
     dueDate: dueDate.value,
     priority: priority.value,
+    dateAdded: getDate(),
     notes: notesInput.value,
     completed: false,
     toggleComplete: function () {
@@ -79,3 +82,14 @@ const todoFactory = () => {
     },
   };
 };
+
+function getDate() {
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, "0");
+  let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  let yyyy = today.getFullYear();
+  return yyyy + "-" + mm + "-" + dd;
+}
+
+
+// console.log(format(new Date(), 'eeee', 'mmm'));

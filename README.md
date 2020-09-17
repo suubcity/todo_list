@@ -1,5 +1,8 @@
 # todo_list
 
+add current date to all new created todos
+
+create dom generation for completed todos
 
 
 
@@ -17,7 +20,7 @@ delete button {
     render
 }
 
-<!-- clear compleated  -->
+<!-- clear completed  -->
 back button returns to main page
 delete button {
     clears all items from array with completed = true.
@@ -56,7 +59,7 @@ info button {
     switch to info page
 }
 
-<!-- compleated page  -->
+<!-- completed page  -->
     clear button {
         switch to clear page
     }
@@ -109,7 +112,7 @@ function displayPage(page) {
 render function {
     
     (when you render give each todo the index from the array)
-    if there are true done tasks in array display compleated todos section
+    if there are true done tasks in array display completed todos section
 }
 
 <!-- on the object  -->
@@ -126,47 +129,9 @@ add
 
 
 
-   <div class="todo">
-            <nav class="todoNav">
-              <img
-                class="button doneButton"
-                src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511973/Icons/035-check-1_w6twiu.png"
-                alt="Tick"
-              />
-
-              <img
-                class="button editButton"
-                src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511971/Icons/020-edit_lwkmwt.png"
-                alt="Edit"
-              />
-
-              <img
-                class="button infoButton"
-                src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599514254/Icons/info_q23uvm.png"
-                alt="Information"
-              />
-            </nav>
-
-            <div class="todoInner">
-              <h2 class="todoInfo title">Go shopping for a rad new tiger.</h2>
-              <h5 class="todoInfo due">Due: 24/05/2022</h5>
-              <h5 class="todoInfo priority">Priority: High</h5>
-              <h5 class="todoInfo dateAdded">Added: 20/01/1999</h5>
-              <h5 class="todoInfo project">Project: Work</h5>
-            </div>
-          </div>
-          <!-- compleated todos  -->
-          <div id="compleatedTodosPage">
-            <hr />
-            <nav id="clearCompleatedTodosNav">
-              <h2>Clear completed</h2>
-              <img
-                class="button redGlow"
-                src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511969/Icons/005-trash_kbzvla.png"
-                alt="Delete"
-              />
-            </nav>
-            <div class="todo compleatedTodo">
+          <!-- completed todos  -->
+        
+            <div class="todo completedTodo">
               <nav class="todoNav">
                 <div>
                   <img

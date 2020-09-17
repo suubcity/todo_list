@@ -116,16 +116,6 @@ body {
   filter: invert(1);
 }
 
-@media only screen and (min-width: 600px) {
-  .title {
-    font-size: 1.5rem;
-  }
-  .button {
-    width: 2rem;
-    height: auto;
-  }
-}
-
 .redGlow {
   transition: filter 0.5s;
   opacity: 0.65;
@@ -215,12 +205,8 @@ p {
 
 /* #region todoPage  */
 
-#todoPage {
-  /* display: none; */
-}
-
 #todoNavTop {
-  font-size: 1rem;
+  font-size: 0.8rem;
   display: flex;
   justify-content: space-around;
   align-items: baseline;
@@ -248,6 +234,7 @@ p {
   justify-content: flex-start;
   align-items: baseline;
 }
+
 #displayByProjectSelect {
   margin-left: 1rem;
   height: auto;
@@ -292,17 +279,9 @@ p {
   flex-basis: 800px;
 }
 
-.priority {
-  background: rgba(255, 13, 13, 0.3);
-}
-
 /* #endregion to do  */
 
-/* #region compleatedTodosPage  */
-
-#compleatedTodosPage {
-  /* display: none; */
-}
+/* #region completedTodosPage  */
 
 hr {
   border: 0;
@@ -311,7 +290,8 @@ hr {
   margin: 1rem 0;
 }
 
-#clearCompleatedTodosNav {
+#clearCompletedTodosNav {
+  font-size: 0.6rem;
   background: rgba(220, 220, 220, 0.52);
   padding: 0.2rem 0;
   display: flex;
@@ -320,11 +300,11 @@ hr {
   height: auto;
 }
 
-#clearCompleatedTodosNav > * {
-  margin: 0 1rem 0 0;
+#clearCompletedTodosNav > * {
+  margin: 0 .5rem 0 0;
 }
 
-.compleatedTodo {
+.completedTodo {
   text-decoration: line-through;
 }
 
@@ -337,7 +317,7 @@ hr {
   filter: invert(1) drop-shadow(0px 0px 5px red);
 }
 
-/* #endregion compleatedTodos */
+/* #endregion completedTodos */
 
 /* #region addEditPage  */
 #addEditPage {
@@ -413,7 +393,7 @@ select {
 
 /* #endregion form  */
 
-/* css toggles  */
+/* #region css toggles  */
 
 .bold {
   font-weight: bold;
@@ -421,4 +401,34 @@ select {
 
 .hide {
   display: none !important;
+}
+
+.highPriority {
+  background: rgba(255, 13, 13, 0.3);
+}
+
+.mediumPriority {
+  background: rgba(210, 177, 30, 0.3);
+}
+
+.lowPriority {
+  background: rgba(0, 128, 0, 0.3);
+}
+
+/* #endregion */
+
+@media only screen and (min-width: 600px) {
+  .title {
+    font-size: 1.5rem;
+  }
+  .button {
+    width: 2rem;
+    height: auto;
+  }
+  #todoNavTop {
+    font-size: 1rem;
+  }
+  #clearCompletedTodosNav {
+    font-size: .8rem;
+  }
 }

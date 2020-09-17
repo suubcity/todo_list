@@ -1,13 +1,19 @@
 import { todoArray } from "./objectFunctions";
 
+//#region html templates
+let todoNavHtml = "          <nav id=\"todoNavTop\">\r\n            <div id=\"displayByProject\">\r\n              <h4 class=\"bold\">View By Project<\/h4>\r\n              <select id=\"displayByProjectSelect\">\r\n                <option value=\"all\">All<\/option>\r\n                <option value=\"School\">School<\/option>\r\n                <option value=\"Work\">Todo List<\/option>\r\n              <\/select>\r\n            <\/div>\r\n            <h4 class=\"bold\">Sort By:<\/h4>\r\n            <h4 class=\"sortButton bold\">Due<\/h4>\r\n\r\n            <h4 class=\"sortButton\">Priority<\/h4>\r\n            <h4 class=\"sortButton\">Added<\/h4>\r\n            <h4 class=\"sortButton\">Title<\/h4>\r\n          <\/nav>";
+
+let completedTodosNavHtml = "      <hr \/>\r\n          <nav id=\"clearCompletedTodosNav\">\r\n            <h2>Clear completed<\/h2>\r\n            <img\r\n              id=\"clearCompleteButton\"\r\n              class=\"button redGlow\"\r\n              src=\"https:\/\/res.cloudinary.com\/dli7mlkdu\/image\/upload\/v1599511969\/Icons\/005-trash_kbzvla.png\"\r\n              alt=\"Delete\"\r\n            \/>\r\n          <\/nav>";
+//#endregion html template
+
 //#region pages querySelectors
 
 const deleteTodoPage = document.getElementById("deleteTodoPage");
-const clearCompletedPage = document.getElementById("clearCompleatedPage");
+const clearCompletedPage = document.getElementById("clearcompletedPage");
 const notesPage = document.getElementById("notesPage");
 const todoPage = document.getElementById("todoPage");
-const compleatedTodosPage = document.getElementById("compleatedTodosPage");
-const AddEditPage = document.getElementById("addEditPage");
+const completedTodosPage = document.getElementById("completedTodosPage");
+const addEditPage = document.getElementById("addEditPage");
 
 //#endregion
 
@@ -33,7 +39,7 @@ const notesInput = document.getElementById("notesInput");
 //#endregion
 
 //#region button eventListeners
-titleInput.addEventListener("input", () => checkForTitle());
+titleInput.addEventListener("input", () => toggleSaveButtonDisplay());
 
 ADD_BUTTON.addEventListener("click", () => {
   displayAddEditPage();
@@ -43,6 +49,7 @@ ADD_BUTTON.addEventListener("click", () => {
 
 SAVE_BUTTON.addEventListener("click", () => {
   displayTodoPage();
+  render();
 });
 
 ADD_EDIT_BACK_BUTTON.addEventListener("click", () => {
@@ -63,23 +70,24 @@ DELETE_PAGE_DELETE_BUTTON.addEventListener("click", () => {
 
 //#endregion
 
-let pagesArray = [
-  deleteTodoPage,
-  clearCompletedPage,
-  notesPage,
-  todoPage,
-  AddEditPage,
-];
-
 //#region local functions
 
-function checkForTitle() {
+function toggleSaveButtonDisplay() {
   if (titleInput.value !== "") {
     SAVE_BUTTON.classList.remove("hide");
   } else {
     SAVE_BUTTON.classList.add("hide");
   }
 }
+
+let pagesArray = [
+  deleteTodoPage,
+  clearCompletedPage,
+  notesPage,
+  todoPage,
+  addEditPage,
+  completedTodosPage,
+];
 
 function displayPage(pageToDisplay) {
   pageToDisplay.classList.remove("hide");
@@ -90,24 +98,36 @@ function displayPage(pageToDisplay) {
   });
 }
 
-function populateProjectSelections() {
+//create an array of projects
+
+function createProjectList() {
+  let projectsArray = [];
+
   todoArray.forEach((todo) => {
-    console.log(todo.project);
+    if (!projectsArray.includes(todo.project)) {
+      projectsArray.push(todo.project);
+    }
+  });
+
+  return projectsArray;
+}
+//filter it so there is only one of each
+
+function populateProjectSelections() {
+  selectProject.innerHTML = " <option value=\"\" disabled selected>\r\n                Select Existing Project\r\n              <\/option>";
+  let projects = createProjectList();
+  projects.forEach((project) => {
     let option = document.createElement("option");
-    option.value = todo.project;
-    option.innerHTML = todo.project;
+    option.value = project;
+    option.innerHTML = project;
     selectProject.appendChild(option);
   });
 }
 
-//#endregion
-
-//#region exports
-
 function displayDeleteTodoPage() {
   displayPage(deleteTodoPage);
 }
-function displayClearCompleatedPage() {
+function displayClearcompletedPage() {
   displayPage(clearCompletedPage);
 }
 function displayNotesPage() {
@@ -118,20 +138,42 @@ function displayTodoPage() {
   ADD_BUTTON.classList.remove("hide");
 }
 function displayAddEditPage() {
-  displayPage(AddEditPage);
+  displayPage(addEditPage);
 }
 
-//#endregion
-
 function render() {
-  checkForCompleatedTodos();
+  todoPage.innerHTML = todoNavHtml;
+  checkForcompletedTodos();
   todoArray.forEach((todo) => {
     if (todo.completed === false) {
       renderTodos(todo);
     } else {
-      //renderCompleatedTodos();
+      rendercompletedTodos(todo);
     }
   });
+}
+
+//shows completed section if there are completed todos
+function checkForcompletedTodos() {
+  if (todoArray.some((item) => item.completed === true)) {
+    completedTodosPage.classList.remove("hide");
+  } else {
+    completedTodosPage.classList.add("hide");
+  }
+}
+
+function changeColorByPriorty(todo, priority) {
+  switch (todo.priority) {
+    case "low":
+      priority.classList.add("lowPriority");
+      break;
+    case "medium":
+      priority.classList.add("mediumPriority");
+      break;
+    case "high":
+      priority.classList.add("highPriority");
+      break;
+  }
 }
 
 function renderTodos(todo) {
@@ -172,6 +214,8 @@ function renderTodos(todo) {
 
   const priority = document.createElement("h5");
   priority.classList.add("todoInfo", "priority");
+
+  changeColorByPriorty(todo, priority);
   priority.textContent = `Priority: ${todo.priority}`;
 
   const dateAdded = document.createElement("h5");
@@ -197,41 +241,19 @@ function renderTodos(todo) {
   todoInner.appendChild(project);
 }
 
-function checkForCompleatedTodos() {
-  if (todoArray.some((item) => item.completed === true)) {
-    compleatedTodosPage.classList.remove("hide");
-  } else {
-    compleatedTodosPage.classList.add("hide");
-  }
-}
-
-checkForCompleatedTodos();
-//todo edit this function so it builds compleated todos
-function renderCompleatedTodos(todo) {
-  
+function rendercompletedTodos(todo) {
+  completedTodosPage.innerHTML = completedTodosNavHtml;
   const todoDiv = document.createElement("div");
-  todoDiv.classList.add("todo");
+  todoDiv.classList.add("todo", "completedTodo");
 
   const todoNav = document.createElement("nav");
   todoNav.classList.add("todoNav");
 
-  const imgTick = document.createElement("img");
-  imgTick.classList.add("button", "doneButton");
-  imgTick.src =
-    "https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511973/Icons/035-check-1_w6twiu.png";
-  imgTick.alt = "Tick";
-
-  const imgEdit = document.createElement("img");
-  imgEdit.classList.add("button", "editButton");
-  imgEdit.src =
-    "https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511971/Icons/020-edit_lwkmwt.png";
-  imgEdit.alt = "Edit";
-
-  const imgInfo = document.createElement("img");
-  imgInfo.classList.add("button", "infoButton");
-  imgInfo.src =
-    "https://res.cloudinary.com/dli7mlkdu/image/upload/v1599514254/Icons/info_q23uvm.png";
-  imgInfo.alt = "Information";
+  const imgReturn = document.createElement("img");
+  imgReturn.classList.add("button", "returnButton");
+  imgReturn.src =
+    "https://res.cloudinary.com/dli7mlkdu/image/upload/a_90/v1599600615/Icons/return_hitifz.png";
+  imgReturn.alt = "Return";
 
   const todoInner = document.createElement("div");
   todoInner.classList.add("todoInner");
@@ -257,11 +279,9 @@ function renderCompleatedTodos(todo) {
   project.textContent = `Project: ${todo.project}`;
 
   //appending
-  todoPage.appendChild(todoDiv);
+  completedTodosPage.appendChild(todoDiv);
   todoDiv.appendChild(todoNav);
-  todoNav.appendChild(imgTick);
-  todoNav.appendChild(imgEdit);
-  todoNav.appendChild(imgInfo);
+  todoNav.appendChild(imgReturn);
 
   todoDiv.appendChild(todoInner);
   todoInner.appendChild(title);
@@ -271,4 +291,6 @@ function renderCompleatedTodos(todo) {
   todoInner.appendChild(project);
 }
 
-render();
+//#endregion
+
+window.addEventListener("load", render());
