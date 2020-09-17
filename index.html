@@ -41,8 +41,8 @@
           </div>
         </div>
 
-        <!-- clearCompleatedPage  -->
-        <div id="clearCompleatedPage" class="deletePage hide">
+        <!-- clearcompletedPage  -->
+        <div id="clearcompletedPage" class="deletePage hide">
           <div class="deleteMessage">
             <p>Are you sure you want to clear completed tasks?</p>
             <nav class="deletePageNav">
@@ -80,35 +80,12 @@
         <!-- to do section  -->
 
         <div id="todoPage">
-          <nav id="todoNavTop">
-            <div id="displayByProject">
-              <h4 class="bold">View By Project</h4>
-              <select id="displayByProjectSelect">
-                <option value="all">All</option>
-                <option value="School">School</option>
-                <option value="Work">Todo List</option>
-              </select>
-            </div>
-            <h4 class="bold">Sort By:</h4>
-            <h4 class="sortButton bold">Due</h4>
 
-            <h4 class="sortButton">Priority</h4>
-            <h4 class="sortButton">Added</h4>
-            <h4 class="sortButton">Title</h4>
-          </nav>
-       
         </div>
-        <!-- compleated to dos  -->
-        <div id="compleatedTodosPage">
-          <hr />
-          <nav id="clearCompleatedTodosNav">
-            <h2>Clear completed</h2>
-            <img
-              class="button redGlow"
-              src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511969/Icons/005-trash_kbzvla.png"
-              alt="Delete"
-            />
-          </nav>
+        <!-- completed to dos  -->
+        <div id="completedTodosPage">
+    
+        </div>
 
         <!-- addEditPage  -->
 
@@ -142,11 +119,7 @@
 
             <label>Project</label><br />
 
-            <select id="selectProject" name="project">
-              <option value="" disabled selected>
-                Select Existing Project
-              </option>
-            </select>
+            <select id="selectProject" name="project"></select>
             <label for="addNewProject">Create New Project</label>
             <input id="addNewProjectInput" name="addNewProject" type="text" />
 
