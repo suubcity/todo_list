@@ -1,9 +1,12 @@
 import { todoArray } from "./objectFunctions";
+import { format, parseISO } from "date-fns";
 
 //#region html templates
-let todoNavHtml = "          <nav id=\"todoNavTop\">\r\n            <div id=\"displayByProject\">\r\n              <h4 class=\"bold\">View By Project<\/h4>\r\n              <select id=\"displayByProjectSelect\">\r\n                <option value=\"all\">All<\/option>\r\n                <option value=\"School\">School<\/option>\r\n                <option value=\"Work\">Todo List<\/option>\r\n              <\/select>\r\n            <\/div>\r\n            <h4 class=\"bold\">Sort By:<\/h4>\r\n            <h4 class=\"sortButton bold\">Due<\/h4>\r\n\r\n            <h4 class=\"sortButton\">Priority<\/h4>\r\n            <h4 class=\"sortButton\">Added<\/h4>\r\n            <h4 class=\"sortButton\">Title<\/h4>\r\n          <\/nav>";
+let todoNavHtml =
+  '          <nav id="todoNavTop">\r\n            <div id="displayByProject">\r\n              <h4 class="bold">View By Project</h4>\r\n              <select id="displayByProjectSelect">\r\n                <option value="all">All</option>\r\n                <option value="School">School</option>\r\n                <option value="Work">Todo List</option>\r\n              </select>\r\n            </div>\r\n            <h4 class="bold">Sort By:</h4>\r\n            <h4 class="sortButton bold">Due</h4>\r\n\r\n            <h4 class="sortButton">Priority</h4>\r\n            <h4 class="sortButton">Added</h4>\r\n            <h4 class="sortButton">Title</h4>\r\n          </nav>';
 
-let completedTodosNavHtml = "      <hr \/>\r\n          <nav id=\"clearCompletedTodosNav\">\r\n            <h2>Clear completed<\/h2>\r\n            <img\r\n              id=\"clearCompleteButton\"\r\n              class=\"button redGlow\"\r\n              src=\"https:\/\/res.cloudinary.com\/dli7mlkdu\/image\/upload\/v1599511969\/Icons\/005-trash_kbzvla.png\"\r\n              alt=\"Delete\"\r\n            \/>\r\n          <\/nav>";
+let completedTodosNavHtml =
+  '      <hr />\r\n          <nav id="clearCompletedTodosNav">\r\n            <h2>Clear completed</h2>\r\n            <img\r\n              id="clearCompleteButton"\r\n              class="button redGlow"\r\n              src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511969/Icons/005-trash_kbzvla.png"\r\n              alt="Delete"\r\n            />\r\n          </nav>';
 //#endregion html template
 
 //#region pages querySelectors
@@ -70,6 +73,10 @@ DELETE_PAGE_DELETE_BUTTON.addEventListener("click", () => {
 
 //#endregion
 
+//#region elements eventListeners
+
+//#endregion
+
 //#region local functions
 
 function toggleSaveButtonDisplay() {
@@ -114,7 +121,8 @@ function createProjectList() {
 //filter it so there is only one of each
 
 function populateProjectSelections() {
-  selectProject.innerHTML = " <option value=\"\" disabled selected>\r\n                Select Existing Project\r\n              <\/option>";
+  selectProject.innerHTML =
+    ' <option value="" disabled selected>\r\n                Select Existing Project\r\n              </option>';
   let projects = createProjectList();
   projects.forEach((project) => {
     let option = document.createElement("option");
@@ -176,6 +184,19 @@ function changeColorByPriorty(todo, priority) {
   }
 }
 
+function changeColorByDate(todo, due) {
+  let date = new Date();
+  //due date is within two days
+  if (parseISO(todo.dueDate) - date <= 172800000) {
+    due.classList.add("highPriority");
+    //due date within 1 week
+  } else if (parseISO(todo.dueDate) - date <= 604800000) {
+    due.classList.add("mediumPriority");
+  } else {
+    due.classList.add("lowPriority");
+  }
+}
+
 function renderTodos(todo) {
   const todoDiv = document.createElement("div");
   todoDiv.classList.add("todo");
@@ -210,7 +231,12 @@ function renderTodos(todo) {
 
   const due = document.createElement("h5");
   due.classList.add("todoInfo", "due");
-  due.textContent = `Due Date: ${todo.dueDate}`;
+  changeColorByDate(todo, due);
+  due.textContent = `Due: ${format(
+    parseISO(todo.dueDate),
+    // todo.dueDate,
+    "eeee do-MMM-yyyy"
+  )}`;
 
   const priority = document.createElement("h5");
   priority.classList.add("todoInfo", "priority");
@@ -220,7 +246,11 @@ function renderTodos(todo) {
 
   const dateAdded = document.createElement("h5");
   dateAdded.classList.add("todoInfo", "dateAdded");
-  dateAdded.textContent = `Date added: ${todo.dateAdded}`;
+  dateAdded.textContent = `Added: ${format(
+    // parseISO(todo.dateAdded),
+    todo.dateAdded,
+    "eeee do-MMM-yyyy"
+  )}`;
 
   const project = document.createElement("h5");
   project.classList.add("todoInfo", "project");
@@ -264,7 +294,10 @@ function rendercompletedTodos(todo) {
 
   const due = document.createElement("h5");
   due.classList.add("todoInfo", "due");
-  due.textContent = `Due Date: ${todo.dueDate}`;
+  due.textContent = `Due: ${format(
+    parseISO(todo.dueDate),
+    "eeee do-MMM-yyyy"
+  )}`;
 
   const priority = document.createElement("h5");
   priority.classList.add("todoInfo", "priority");
@@ -272,7 +305,10 @@ function rendercompletedTodos(todo) {
 
   const dateAdded = document.createElement("h5");
   dateAdded.classList.add("todoInfo", "dateAdded");
-  dateAdded.textContent = `Date added: ${todo.dateAdded}`;
+  dateAdded.textContent = `Added: ${format(
+    parseISO(todo.dateAdded),
+    "eeee do-MMM-yyyy"
+  )}`;
 
   const project = document.createElement("h5");
   project.classList.add("todoInfo", "project");

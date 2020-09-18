@@ -1,43 +1,44 @@
-// import { format } from 'date-fns';
+import { format } from 'date-fns';
 
 //this module can get all the data from the form and create the object and edit it
 export let todoArray = [
-  {
-    title: "Shopping",
-    project: "Home",
-    dueDate: "2020-09-18",
-    dateAdded: "2020-09-18",
-    priority: "low",
-    notes: "Do it now!",
-    completed: true,
-    toggleComplete: function () {
-      this.completed = this.completed === false ? true : false;
-    },
-  },
-  {
-    title: "Wages",
-    project: "Work",
-    dueDate: "2020-09-28",
-    dateAdded: "2020-09-28",
-    priority: "high",
-    notes: "Do it now!",
-    completed: false,
-    toggleComplete: function () {
-      this.completed = this.completed === false ? true : false;
-    },
-  },
-  {
-    title: "Shopping",
-    project: "Home",
-    dueDate: "2020-09-18",
-    dateAdded: "2020-09-18",
-    priority: "medium",
-    notes: "Do it now!",
-    completed: false,
-    toggleComplete: function () {
-      this.completed = this.completed === false ? true : false;
-    },
-  },
+  //todo generate these terst items using the factory
+  // {
+  //   title: "Shopping",
+  //   project: "Home",
+  //   dueDate: "2020-09-18",
+  //   dateAdded: "2020-07-18",
+  //   priority: "low",
+  //   notes: "Do it now!",
+  //   completed: true,
+  //   toggleComplete: function () {
+  //     this.completed = this.completed === false ? true : false;
+  //   },
+  // },
+  // {
+  //   title: "Wages",
+  //   project: "Work",
+  //   dueDate: "2020-09-18",
+  //   dateAdded: "2020-06-18",
+  //   priority: "high",
+  //   notes: "Do it now!",
+  //   completed: false,
+  //   toggleComplete: function () {
+  //     this.completed = this.completed === false ? true : false;
+  //   },
+  // },
+  // {
+  //   title: "Shopping",
+  //   project: "Home",
+  //   dueDate: "2020-09-18",
+  //   dateAdded: "2020-09-18",
+  //   priority: "medium",
+  //   notes: "Do it now!",
+  //   completed: false,
+  //   toggleComplete: function () {
+  //     this.completed = this.completed === false ? true : false;
+  //   },
+  // },
 ];
 
 //#region buttons querySelectors
@@ -74,7 +75,7 @@ const todoFactory = () => {
     project: addNewProjectInput.value || selectProject.value,
     dueDate: dueDate.value,
     priority: priority.value,
-    dateAdded: getDate(),
+    dateAdded: new Date(),
     notes: notesInput.value,
     completed: false,
     toggleComplete: function () {
@@ -83,13 +84,7 @@ const todoFactory = () => {
   };
 };
 
-function getDate() {
-  let today = new Date();
-  let dd = String(today.getDate()).padStart(2, "0");
-  let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-  let yyyy = today.getFullYear();
-  return yyyy + "-" + mm + "-" + dd;
-}
 
 
-// console.log(format(new Date(), 'eeee', 'mmm'));
+
+// console.log(format(new Date(), 'eeee do-MMM-yyyy'));

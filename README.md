@@ -133,13 +133,13 @@ add
         
             <div class="todo completedTodo">
               <nav class="todoNav">
-                <div>
+                
                   <img
                     class="button returnButton"
                     src="https://res.cloudinary.com/dli7mlkdu/image/upload/a_90/v1599600615/Icons/return_hitifz.png"
                     alt="Return Todo"
                   />
-                </div>
+                
               </nav>
 
               <div class="todoInner">
