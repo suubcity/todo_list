@@ -1,45 +1,7 @@
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 //this module can get all the data from the form and create the object and edit it
-export let todoArray = [
-  //todo generate these terst items using the factory
-  // {
-  //   title: "Shopping",
-  //   project: "Home",
-  //   dueDate: "2020-09-18",
-  //   dateAdded: "2020-07-18",
-  //   priority: "low",
-  //   notes: "Do it now!",
-  //   completed: true,
-  //   toggleComplete: function () {
-  //     this.completed = this.completed === false ? true : false;
-  //   },
-  // },
-  // {
-  //   title: "Wages",
-  //   project: "Work",
-  //   dueDate: "2020-09-18",
-  //   dateAdded: "2020-06-18",
-  //   priority: "high",
-  //   notes: "Do it now!",
-  //   completed: false,
-  //   toggleComplete: function () {
-  //     this.completed = this.completed === false ? true : false;
-  //   },
-  // },
-  // {
-  //   title: "Shopping",
-  //   project: "Home",
-  //   dueDate: "2020-09-18",
-  //   dateAdded: "2020-09-18",
-  //   priority: "medium",
-  //   notes: "Do it now!",
-  //   completed: false,
-  //   toggleComplete: function () {
-  //     this.completed = this.completed === false ? true : false;
-  //   },
-  // },
-];
+export let todoArray = [];
 
 //#region buttons querySelectors
 const ADD_BUTTON = document.getElementById("addButton");
@@ -84,7 +46,90 @@ const todoFactory = () => {
   };
 };
 
+const testTodoFactory = (
+  title,
+  project,
+  dueDate,
+  priority,
+  notes,
+  completed
+) => {
+  return {
+    title,
+    project,
+    dueDate,
+    priority,
+    dateAdded: new Date(),
+    notes,
+    completed,
+    toggleComplete: function () {
+      this.completed = this.completed === false ? true : false;
+    },
+  };
+};
 
 
+
+todoArray.push(
+  testTodoFactory("Shopping", "Home", "2020-10-13", "low", "get her done", false)
+);
+
+todoArray.push(
+  testTodoFactory("Shopping", "Home", "2020-09-01", "high", "get her done", false)
+);
+
+
+todoArray.push(
+  testTodoFactory("Shopping", "Home", "2020-12-01", "medium", "get her done", false)
+);
+
+todoArray.push(
+  testTodoFactory("Shopping", "Home", "2020-09-01", "Medium", "get her done", true)
+);
+
+todoArray.push(
+  testTodoFactory("Shopping", "Home", "2020-09-01", "Medium", "get her done", true)
+);
+
+
+
+
+
+// {
+//   title: "Shopping",
+//   project: "Home",
+//   dueDate: "2020-09-18",
+//   dateAdded: "2020-07-18",
+//   priority: "low",
+//   notes: "Do it now!",
+//   completed: true,
+//   toggleComplete: function () {
+//     this.completed = this.completed === false ? true : false;
+//   },
+// },
+// {
+//   title: "Wages",
+//   project: "Work",
+//   dueDate: "2020-09-18",
+//   dateAdded: "2020-06-18",
+//   priority: "high",
+//   notes: "Do it now!",
+//   completed: false,
+//   toggleComplete: function () {
+//     this.completed = this.completed === false ? true : false;
+//   },
+// },
+// {
+//   title: "Shopping",
+//   project: "Home",
+//   dueDate: "2020-09-18",
+//   dateAdded: "2020-09-18",
+//   priority: "medium",
+//   notes: "Do it now!",
+//   completed: false,
+//   toggleComplete: function () {
+//     this.completed = this.completed === false ? true : false;
+//   },
+// },
 
 // console.log(format(new Date(), 'eeee do-MMM-yyyy'));
