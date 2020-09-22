@@ -19,48 +19,7 @@ const addEditPage = document.getElementById("addEditPage");
 
 //#endregion
 
-//#region buttons querySelectors
-//to-doPage
-const ADD_BUTTON = document.getElementById("addButton");
-// addEditPage
-const saveButton = document.getElementById("saveButton");
-const addEditBackButton = document.getElementById("addEditBackButton");
-const addEditDeleteButton = document.getElementById("addEditDeleteButton");
-//#endregion
-
-//#region Form Inputs querySelectors
-const titleInput = document.getElementById("titleInput");
-const selectProject = document.getElementById("selectProject");
-const addNewProjectInput = document.getElementById("addNewProjectInput");
-const dueDate = document.getElementById("dueDate");
-const priority = document.getElementById("priority");
-const notesInput = document.getElementById("notesInput");
-
-//#endregion
-
-//#region elements querySelectors
-// deleteTodoPage
-const todoNameDeleteMessage = document.getElementById("todoNameDeleteMessage");
-
-const deletePageBackButton = document.getElementById("deletePageBackButton");
-const deletePageDeleteButton = document.getElementById(
-  "deletePageDeleteButton"
-);
-
-//#endregion
-
-//#region button eventListeners
-
-ADD_BUTTON.addEventListener("click", () => {
-  displayAddEditPage();
-  clearForm();
-  ADD_BUTTON.classList.add("hide");
-  populateProjectSelections();
-});
-
-//#endregion
-
-//#region display functions
+//#region page display functions
 let pagesArray = [
   deleteTodoPage,
   clearCompletedPage,
@@ -90,7 +49,7 @@ function displayNotesPage() {
 }
 function displayTodoPage() {
   displayPage(todoPage);
-  ADD_BUTTON.classList.remove("hide");
+  addButton.classList.remove("hide");
   render();
 }
 function displayAddEditPage() {
@@ -99,15 +58,78 @@ function displayAddEditPage() {
 
 //#endregion display functions
 
+//#region to-do Page
+
+const addButton = document.getElementById("addButton");
+addButton.addEventListener("click", () => {
+  displayAddEditPage();
+  clearForm();
+  addButton.classList.add("hide");
+  populateProjectSelections();
+});
+
+//#region doneUnDoneButtons
+let doneUnDoneButtons = [];
+function getDoneUnDoneButtonsNodeList() {
+  doneUnDoneButtons = document.querySelectorAll(".doneUnDoneButtons");
+}
+function addListenersToDoneUnDoneButtons() {
+  doneUnDoneButtons.forEach((button) => {
+    button.addEventListener("click", () => triggerToggleComplete(button));
+  });
+}
+function triggerToggleComplete(button) {
+  todoArray[button.dataset.index].toggleComplete();
+  render();
+}
+
+//#endregion doneUnDoneButtons
+
+//#region notesButtons
+let notesButtons = [];
+function getNotesButtonNodeList() {
+  notesButtons = document.querySelectorAll(".notesButton");
+}
+function addListenersNotesButtonsNodeList() {
+  notesButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      displayNotesPage();
+    });
+  });
+}
+
+//#endregion notesButtons
+
+function updateAllTodoPageQuerySelectorsAndListeners() {
+  getNotesButtonNodeList();
+  addListenersNotesButtonsNodeList();
+  getDoneUnDoneButtonsNodeList();
+  addListenersToDoneUnDoneButtons();
+}
+
+//#endregion to-do Page
+
 //#region addEditPage
+
+//#region addEditPage querySelectors
+const titleInput = document.getElementById("titleInput");
+const selectProject = document.getElementById("selectProject");
+const addNewProjectInput = document.getElementById("addNewProjectInput");
+const dueDate = document.getElementById("dueDate");
+const priority = document.getElementById("priority");
+const notesInput = document.getElementById("notesInput");
+const saveButton = document.getElementById("saveButton");
+const addEditBackButton = document.getElementById("addEditBackButton");
+const addEditDeleteButton = document.getElementById("addEditDeleteButton");
+//#endregion
+
+//#region addEditPage eventListeners
 titleInput.addEventListener("input", () => toggleSaveAndDeleteButtonDisplay());
 
 saveButton.addEventListener("click", () => {
   displayTodoPage();
 
   saveButton.classList.add("hide");
-
-  console.table(todoArray);
 });
 
 addEditBackButton.addEventListener("click", () => {
@@ -118,7 +140,9 @@ addEditDeleteButton.addEventListener("click", () => {
   displayDeleteTodoPage();
   displayTodoTitle();
 });
+//#endregion
 
+//#region addEditPage functions
 function toggleSaveAndDeleteButtonDisplay() {
   if (titleInput.value !== "") {
     saveButton.classList.remove("hide");
@@ -168,9 +192,16 @@ function populateProjectSelections() {
   });
 }
 
-//#endregion addEditPage
+//#endregion
+
+//#endregion
 
 //#region deletePage
+const todoNameDeleteMessage = document.getElementById("todoNameDeleteMessage");
+const deletePageBackButton = document.getElementById("deletePageBackButton");
+const deletePageDeleteButton = document.getElementById(
+  "deletePageDeleteButton"
+);
 
 deletePageBackButton.addEventListener("click", () => {
   displayAddEditPage();
@@ -181,27 +212,12 @@ deletePageDeleteButton.addEventListener("click", () => {
 });
 //#endregion deletePage
 
-//#region todos page
-let doneUnDoneButtonsNodeList = [];
+//#region notes Page
+const notesPageBackButton = document.getElementById("notesPageBackButton");
+const notesPageTodoTitle = document.getElementById("notesPageTodoTitle");
+const notesPageNotes = document.getElementById("notesPageNotes");
 
-function addListenerToCompleteButtons() {
-  
-  doneUnDoneButtonsNodeList.forEach(button => {
-    button.addEventListener('click', () => triggerToggleComplete(button));
-    
-  });
-}
-
-function triggerToggleComplete(button) {
-  console.table(button.dataset.index);
-  todoArray[button.dataset.index].toggleComplete();
-  render();
-}
-
-
-
-
-//#endregion
+//#endregion notes Page
 
 //#region render section
 
@@ -215,14 +231,7 @@ function render() {
       rendercompletedTodos(todo, index);
     }
   });
-  getDoneUnDoneButtonsNodeList();
-  addListenerToCompleteButtons();
-}
-
-function getDoneUnDoneButtonsNodeList() {
-  
-  doneUnDoneButtonsNodeList = document.querySelectorAll(".doneUnDoneButtons"); 
-
+  updateAllTodoPageQuerySelectorsAndListeners();
 }
 
 function renderTodos(todo, index) {
@@ -239,28 +248,28 @@ function renderTodos(todo, index) {
     "https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511973/Icons/035-check-1_w6twiu.png";
   imgTick.alt = "Tick";
   imgTick.dataset.index = index;
-  
+
   const imgEdit = document.createElement("img");
   imgEdit.classList.add("button", "editButton");
   imgEdit.src =
     "https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511971/Icons/020-edit_lwkmwt.png";
   imgEdit.alt = "Edit";
 
-  const imgInfo = document.createElement("img");
-  imgInfo.classList.add("button", "infoButton");
-  imgInfo.src =
+  const imgNotes = document.createElement("img");
+  imgNotes.classList.add("button", "notesButton");
+  imgNotes.src =
     "https://res.cloudinary.com/dli7mlkdu/image/upload/v1599514254/Icons/info_q23uvm.png";
-  imgInfo.alt = "Information";
+  imgNotes.alt = "notes";
 
   const todoInner = document.createElement("div");
   todoInner.classList.add("todoInner");
 
   const title = document.createElement("h2");
-  title.classList.add("todoInfo", "title");
+  title.classList.add("todoNotes", "title");
   title.textContent = todo.title;
 
   const due = document.createElement("h5");
-  due.classList.add("todoInfo", "due");
+  due.classList.add("todoNotes", "due");
   changeColorByDate(todo, due);
 
   if (checkForEmpty(todo.dueDate)) {
@@ -276,7 +285,7 @@ function renderTodos(todo, index) {
   }
 
   const priority = document.createElement("h5");
-  priority.classList.add("todoInfo", "priority");
+  priority.classList.add("todoNotes", "priority");
   if (checkForEmpty(todo.priority)) {
     priority.classList.add("hide");
   } else {
@@ -285,7 +294,7 @@ function renderTodos(todo, index) {
   }
 
   const dateAdded = document.createElement("h5");
-  dateAdded.classList.add("todoInfo", "dateAdded");
+  dateAdded.classList.add("todoNotes", "dateAdded");
   dateAdded.textContent = `Added: ${format(
     // parseISO(todo.dateAdded),
     todo.dateAdded,
@@ -293,7 +302,7 @@ function renderTodos(todo, index) {
   )}`;
 
   const project = document.createElement("h5");
-  project.classList.add("todoInfo", "project");
+  project.classList.add("todoNotes", "project");
   if (todo.project === "None" || checkForEmpty(todo.project)) {
     project.classList.add("hide");
   } else {
@@ -305,7 +314,7 @@ function renderTodos(todo, index) {
   todoDiv.appendChild(todoNav);
   todoNav.appendChild(imgTick);
   todoNav.appendChild(imgEdit);
-  todoNav.appendChild(imgInfo);
+  todoNav.appendChild(imgNotes);
 
   todoDiv.appendChild(todoInner);
   todoInner.appendChild(title);
@@ -323,22 +332,22 @@ function rendercompletedTodos(todo, index) {
   const todoNav = document.createElement("nav");
   todoNav.classList.add("todoNav");
 
-  const imgReturn = document.createElement("img");
-  imgReturn.classList.add("button", "doneUnDoneButtons");
-  imgReturn.src =
+  const imgBack = document.createElement("img");
+  imgBack.classList.add("button", "doneUnDoneButtons");
+  imgBack.src =
     "https://res.cloudinary.com/dli7mlkdu/image/upload/a_90/v1599600615/Icons/return_hitifz.png";
-  imgReturn.alt = "Return";
-  imgReturn.dataset.index = index;
+  imgBack.alt = "Back button";
+  imgBack.dataset.index = index;
 
   const todoInner = document.createElement("div");
   todoInner.classList.add("todoInner");
 
   const title = document.createElement("h2");
-  title.classList.add("todoInfo", "title");
+  title.classList.add("todoNotes", "title");
   title.textContent = todo.title;
 
   const due = document.createElement("h5");
-  due.classList.add("todoInfo", "due");
+  due.classList.add("todoNotes", "due");
   if (checkForEmpty(todo.dueDate)) {
     due.classList.add("hide");
   } else {
@@ -350,7 +359,7 @@ function rendercompletedTodos(todo, index) {
   }
 
   const priority = document.createElement("h5");
-  priority.classList.add("todoInfo", "priority");
+  priority.classList.add("todoNotes", "priority");
   if (todo.project === "None" || checkForEmpty(todo.project)) {
     priority.classList.add("hide");
   } else {
@@ -358,14 +367,14 @@ function rendercompletedTodos(todo, index) {
   }
 
   const dateAdded = document.createElement("h5");
-  dateAdded.classList.add("todoInfo", "dateAdded");
+  dateAdded.classList.add("todoNotes", "dateAdded");
   dateAdded.textContent = `Added: ${format(
     todo.dateAdded,
     "eeee do-MMM-yyyy"
   )}`;
 
   const project = document.createElement("h5");
-  project.classList.add("todoInfo", "project");
+  project.classList.add("todoNotes", "project");
   if (checkForEmpty(todo.project)) {
     project.classList.add("hide");
   } else {
@@ -375,7 +384,7 @@ function rendercompletedTodos(todo, index) {
   //appending
   completedTodosPage.appendChild(todoDiv);
   todoDiv.appendChild(todoNav);
-  todoNav.appendChild(imgReturn);
+  todoNav.appendChild(imgBack);
 
   todoDiv.appendChild(todoInner);
   todoInner.appendChild(title);
@@ -444,7 +453,3 @@ function checkForEmpty(value) {
 //#region update querySelectors
 
 window.addEventListener("load", render());
-
-
-
-

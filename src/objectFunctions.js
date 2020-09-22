@@ -45,7 +45,7 @@ const todoFactory = () => {
     completed: false,
     toggleComplete: function () {
       this.completed = this.completed === false ? true : false;
-      console.log(this.completed);
+     
     },
   };
 };
@@ -70,7 +70,7 @@ const testTodoFactory = (
     completed,
     toggleComplete: function () {
       this.completed = this.completed === false ? true : false;
-      console.log(this.completed);
+      
     },
   };
 };
