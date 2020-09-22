@@ -10,7 +10,6 @@ let completedTodosNavHtml =
 //#endregion html template
 
 //#region pages querySelectors
-
 const deleteTodoPage = document.getElementById("deleteTodoPage");
 const clearCompletedPage = document.getElementById("clearcompletedPage");
 const notesPage = document.getElementById("notesPage");
@@ -21,14 +20,12 @@ const addEditPage = document.getElementById("addEditPage");
 //#endregion
 
 //#region buttons querySelectors
+//to-doPage
 const ADD_BUTTON = document.getElementById("addButton");
-const SAVE_BUTTON = document.getElementById("saveButton");
-const ADD_EDIT_BACK_BUTTON = document.getElementById("addEditBackButton");
-const ADD_EDIT_DELETE_BUTTON = document.getElementById("addEditDeleteButton");
-const DELETE_PAGE_BACK_BUTTON = document.getElementById("deletePageBackButton");
-const DELETE_PAGE_DELETE_BUTTON = document.getElementById(
-  "deletePageDeleteButton"
-);
+// addEditPage
+const saveButton = document.getElementById("saveButton");
+const addEditBackButton = document.getElementById("addEditBackButton");
+const addEditDeleteButton = document.getElementById("addEditDeleteButton");
 //#endregion
 
 //#region Form Inputs querySelectors
@@ -41,22 +38,24 @@ const notesInput = document.getElementById("notesInput");
 
 //#endregion
 
+//#region elements querySelectors
+// deleteTodoPage
+const todoNameDeleteMessage = document.getElementById("todoNameDeleteMessage");
+
+const deletePageBackButton = document.getElementById("deletePageBackButton");
+const deletePageDeleteButton = document.getElementById(
+  "deletePageDeleteButton"
+);
+
+//#endregion
+
 //#region button eventListeners
-titleInput.addEventListener("input", () => toggleSaveButtonDisplay());
 
 ADD_BUTTON.addEventListener("click", () => {
   displayAddEditPage();
   clearForm();
   ADD_BUTTON.classList.add("hide");
   populateProjectSelections();
-});
-
-DELETE_PAGE_BACK_BUTTON.addEventListener("click", () => {
-  displayAddEditPage();
-});
-
-DELETE_PAGE_DELETE_BUTTON.addEventListener("click", () => {
-  displayTodoPage();
 });
 
 //#endregion
@@ -92,6 +91,7 @@ function displayNotesPage() {
 function displayTodoPage() {
   displayPage(todoPage);
   ADD_BUTTON.classList.remove("hide");
+  render();
 }
 function displayAddEditPage() {
   displayPage(addEditPage);
@@ -100,28 +100,32 @@ function displayAddEditPage() {
 //#endregion display functions
 
 //#region addEditPage
-SAVE_BUTTON.addEventListener("click", () => {
-  displayTodoPage();
-  render();
+titleInput.addEventListener("input", () => toggleSaveAndDeleteButtonDisplay());
 
-  SAVE_BUTTON.classList.add("hide");
+saveButton.addEventListener("click", () => {
+  displayTodoPage();
+
+  saveButton.classList.add("hide");
 
   console.table(todoArray);
 });
 
-ADD_EDIT_BACK_BUTTON.addEventListener("click", () => {
+addEditBackButton.addEventListener("click", () => {
   displayTodoPage();
 });
 
-ADD_EDIT_DELETE_BUTTON.addEventListener("click", () => {
+addEditDeleteButton.addEventListener("click", () => {
   displayDeleteTodoPage();
+  displayTodoTitle();
 });
 
-function toggleSaveButtonDisplay() {
+function toggleSaveAndDeleteButtonDisplay() {
   if (titleInput.value !== "") {
-    SAVE_BUTTON.classList.remove("hide");
+    saveButton.classList.remove("hide");
+    addEditDeleteButton.classList.remove("hide");
   } else {
-    SAVE_BUTTON.classList.add("hide");
+    saveButton.classList.add("hide");
+    addEditDeleteButton.classList.add("hide");
   }
 }
 
@@ -131,6 +135,10 @@ function clearForm() {
   dueDate.value = "";
   priority.value = "";
   notesInput.value = "";
+}
+
+function displayTodoTitle() {
+  todoNameDeleteMessage.textContent = titleInput.value;
 }
 
 //create an array of projects
@@ -143,7 +151,7 @@ function createProjectList() {
       projectsArray.push(todo.project);
     }
   });
-
+  projectsArray.push("None");
   return projectsArray;
 }
 //filter it so there is only one of each
@@ -162,82 +170,76 @@ function populateProjectSelections() {
 
 //#endregion addEditPage
 
+//#region deletePage
+
+deletePageBackButton.addEventListener("click", () => {
+  displayAddEditPage();
+});
+
+deletePageDeleteButton.addEventListener("click", () => {
+  displayTodoPage();
+});
+//#endregion deletePage
+
+//#region todos page
+let doneUnDoneButtonsNodeList = [];
+
+function addListenerToCompleteButtons() {
+  
+  doneUnDoneButtonsNodeList.forEach(button => {
+    button.addEventListener('click', () => triggerToggleComplete(button));
+    
+  });
+}
+
+function triggerToggleComplete(button) {
+  console.table(button.dataset.index);
+  todoArray[button.dataset.index].toggleComplete();
+  render();
+}
+
+
+
+
+//#endregion
+
 //#region render section
 
 function render() {
   todoPage.innerHTML = todoNavHtml;
   checkForcompletedTodos();
-  todoArray.forEach((todo) => {
+  todoArray.forEach((todo, index) => {
     if (todo.completed === false) {
-      renderTodos(todo);
+      renderTodos(todo, index);
     } else {
-      rendercompletedTodos(todo);
+      rendercompletedTodos(todo, index);
     }
   });
+  getDoneUnDoneButtonsNodeList();
+  addListenerToCompleteButtons();
 }
 
-//shows completed section if there are completed todos
-function checkForcompletedTodos() {
-  if (todoArray.some((item) => item.completed === true)) {
-    completedTodosPage.classList.remove("hide");
-  } else {
-    completedTodosPage.classList.add("hide");
-  }
+function getDoneUnDoneButtonsNodeList() {
+  
+  doneUnDoneButtonsNodeList = document.querySelectorAll(".doneUnDoneButtons"); 
+
 }
 
-function changeColorByPriorty(todo, priority) {
-  switch (todo.priority) {
-    case "low":
-      priority.classList.add("lowPriority");
-      break;
-    case "medium":
-      priority.classList.add("mediumPriority");
-      break;
-    case "high":
-      priority.classList.add("highPriority");
-      break;
-  }
-}
-
-function changeColorByDate(todo, due) {
-  let date = new Date();
-  //due date is within two days
-  if (parseISO(todo.dueDate) - date <= 172800000) {
-    due.classList.add("highPriority");
-    //due date within 1 week
-  } else if (parseISO(todo.dueDate) - date <= 604800000) {
-    due.classList.add("mediumPriority");
-  } else {
-    due.classList.add("lowPriority");
-  }
-}
-
-function dateInPast(date) {
-  if (parseISO(date).setHours(0, 0, 0, 0) <= new Date().setHours(0, 0, 0, 0)) {
-    return true;
-  }
-  return false;
-}
-
-function checkForEmpty(value) {
-  if (value === "") {
-    return true;
-  }
-}
-
-function renderTodos(todo) {
+function renderTodos(todo, index) {
   const todoDiv = document.createElement("div");
   todoDiv.classList.add("todo");
+  todoDiv.dataset.index = index;
 
   const todoNav = document.createElement("nav");
   todoNav.classList.add("todoNav");
 
   const imgTick = document.createElement("img");
-  imgTick.classList.add("button", "doneButton");
+  imgTick.classList.add("button", "doneUnDoneButtons");
   imgTick.src =
     "https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511973/Icons/035-check-1_w6twiu.png";
   imgTick.alt = "Tick";
-
+  imgTick.dataset.index = index;
+  
   const imgEdit = document.createElement("img");
   imgEdit.classList.add("button", "editButton");
   imgEdit.src =
@@ -292,7 +294,7 @@ function renderTodos(todo) {
 
   const project = document.createElement("h5");
   project.classList.add("todoInfo", "project");
-  if (checkForEmpty(todo.project)) {
+  if (todo.project === "None" || checkForEmpty(todo.project)) {
     project.classList.add("hide");
   } else {
     project.textContent = `Project: ${todo.project}`;
@@ -313,19 +315,20 @@ function renderTodos(todo) {
   todoInner.appendChild(project);
 }
 
-function rendercompletedTodos(todo) {
-  completedTodosPage.innerHTML = completedTodosNavHtml;
+function rendercompletedTodos(todo, index) {
   const todoDiv = document.createElement("div");
   todoDiv.classList.add("todo", "completedTodo");
+  todoDiv.dataset.index = index;
 
   const todoNav = document.createElement("nav");
   todoNav.classList.add("todoNav");
 
   const imgReturn = document.createElement("img");
-  imgReturn.classList.add("button", "returnButton");
+  imgReturn.classList.add("button", "doneUnDoneButtons");
   imgReturn.src =
     "https://res.cloudinary.com/dli7mlkdu/image/upload/a_90/v1599600615/Icons/return_hitifz.png";
   imgReturn.alt = "Return";
+  imgReturn.dataset.index = index;
 
   const todoInner = document.createElement("div");
   todoInner.classList.add("todoInner");
@@ -348,7 +351,7 @@ function rendercompletedTodos(todo) {
 
   const priority = document.createElement("h5");
   priority.classList.add("todoInfo", "priority");
-  if (checkForEmpty(todo.priority)) {
+  if (todo.project === "None" || checkForEmpty(todo.project)) {
     priority.classList.add("hide");
   } else {
     priority.textContent = `Priority: ${todo.priority}`;
@@ -382,6 +385,66 @@ function rendercompletedTodos(todo) {
   todoInner.appendChild(project);
 }
 
+//shows completed section if there are completed todos
+function checkForcompletedTodos() {
+  if (todoArray.some((item) => item.completed === true)) {
+    completedTodosPage.classList.remove("hide");
+    renderCompletedNavSection();
+  } else {
+    completedTodosPage.classList.add("hide");
+  }
+}
+
+function renderCompletedNavSection() {
+  completedTodosPage.innerHTML = completedTodosNavHtml;
+}
+
+function changeColorByPriorty(todo, priority) {
+  switch (todo.priority) {
+    case "low":
+      priority.classList.add("lowPriority");
+      break;
+    case "medium":
+      priority.classList.add("mediumPriority");
+      break;
+    case "high":
+      priority.classList.add("highPriority");
+      break;
+  }
+}
+
+function changeColorByDate(todo, due) {
+  let date = new Date();
+  //due date is within two days
+  if (parseISO(todo.dueDate) - date <= 172800000) {
+    due.classList.add("highPriority");
+    //due date within 1 week
+  } else if (parseISO(todo.dueDate) - date <= 604800000) {
+    due.classList.add("mediumPriority");
+  } else {
+    due.classList.add("lowPriority");
+  }
+}
+
+function dateInPast(date) {
+  if (parseISO(date).setHours(0, 0, 0, 0) <= new Date().setHours(0, 0, 0, 0)) {
+    return true;
+  }
+  return false;
+}
+
+function checkForEmpty(value) {
+  if (value === "") {
+    return true;
+  }
+}
+
 //#endregion
 
+//#region update querySelectors
+
 window.addEventListener("load", render());
+
+
+
+
