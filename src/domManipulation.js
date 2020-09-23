@@ -1,6 +1,5 @@
 //todo edit button
 //todo view by project
-//todo sort by
 
 import { clearCompletedTodos, sortArray, todoArray } from "./objectFunctions";
 import { format, parseISO } from "date-fns";
@@ -15,7 +14,6 @@ let completedTodosNavHtml =
 
 //#region pages querySelectors
 const deleteTodoPage = document.getElementById("deleteTodoPage");
-const clearCompletedPage = document.getElementById("clearcompletedPage");
 const notesPage = document.getElementById("notesPage");
 const todoPage = document.getElementById("todoPage");
 const completedTodosPage = document.getElementById("completedTodosPage");
@@ -46,10 +44,7 @@ function displayDeleteTodoPage() {
   displayPage(deleteTodoPage);
   addButton.classList.add("hide");
 }
-function displayClearcompletedPage() {
-  displayPage(clearCompletedPage);
-  addButton.classList.add("hide");
-}
+
 function displayNotesPage() {
   displayPage(notesPage);
   addButton.classList.add("hide");
@@ -57,6 +52,8 @@ function displayNotesPage() {
 function displayTodoPage() {
   displayPage(todoPage);
   addButton.classList.remove("hide");
+  saveButton.classList.add("hide");
+  addEditDeleteButton.classList.add("hide");
   render();
 }
 function displayAddEditPage() {
@@ -302,16 +299,27 @@ function checkForEmpty(value) {
 
 const addButton = document.getElementById("addButton");
 
-let clearCompleteButton;
 
+let displayByProjectSelect;
+function getDisplayByProjectSelectDomElement() {
+  displayByProjectSelect = document.getElementById("displayByProjectSelect");
+}
+//todo code here and inside render fucntion to only render todos that match select box
+//todo also need to populate box with current list of projects
+function addListenerTogetDisplayByProjects() {
+  displayByProjectSelect.addEventListener("change", () =>
+    alert(displayByProjectSelect.value)
+  );
+}
+
+let clearCompleteButton;
 function getClearCompleteButtonDomElement() {
   clearCompleteButton = document.getElementById("clearCompleteButton");
 }
 addButton.addEventListener("click", () => {
   displayAddEditPage();
   clearForm();
-
-  populateProjectSelections();
+  populateProjectSelectionsAddEditPage();
 });
 function addEventListenerToclearCompleteButton() {
   clearCompleteButton.addEventListener("click", () => {
@@ -333,16 +341,6 @@ function addListenersToSortButtons() {
     });
   });
 }
-
-// function displayPage(pageToDisplay) {
-//   pageToDisplay.classList.remove("hide");
-//   pagesArray.forEach((page) => {
-//     if (page !== pageToDisplay) {
-//       page.classList.add("hide");
-//     }
-//   });
-// }
-
 //#region doneUnDoneButtons
 let doneUnDoneButtons = [];
 function getDoneUnDoneButtonsNodeList() {
@@ -385,6 +383,8 @@ function updateAllTodoPageQuerySelectorsAndListeners() {
   addEventListenerToclearCompleteButton();
   getSortButtonNodeList();
   addListenersToSortButtons();
+  getDisplayByProjectSelectDomElement();
+  addListenerTogetDisplayByProjects();
 }
 
 //#endregion to-do Page
@@ -408,8 +408,8 @@ titleInput.addEventListener("input", () => toggleSaveAndDeleteButtonDisplay());
 
 saveButton.addEventListener("click", () => {
   displayTodoPage();
-
-  saveButton.classList.add("hide");
+ 
+  
 });
 
 addEditBackButton.addEventListener("click", () => {
@@ -460,7 +460,7 @@ function createProjectList() {
 }
 //filter it so there is only one of each
 
-function populateProjectSelections() {
+function populateProjectSelectionsAddEditPage() {
   selectProject.innerHTML =
     ' <option value="" disabled selected>\r\n                Select Existing Project\r\n              </option>';
   let projects = createProjectList();
