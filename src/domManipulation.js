@@ -1,14 +1,13 @@
 //todo edit button
 //todo view by project
 //todo sort by
-//todo clear compleated
 
-import { todoArray } from "./objectFunctions";
+import { clearCompletedTodos, sortArray, todoArray } from "./objectFunctions";
 import { format, parseISO } from "date-fns";
 
 //#region html templates
 let todoNavHtml =
-  '          <nav id="todoNavTop">\r\n            <div id="displayByProject">\r\n              <h4 class="bold">View By Project</h4>\r\n              <select id="displayByProjectSelect">\r\n                <option value="all">All</option>\r\n                <option value="School">School</option>\r\n                <option value="Work">Todo List</option>\r\n              </select>\r\n            </div>\r\n            <h4 class="bold">Sort By:</h4>\r\n            <h4 class="sortButton bold">Due</h4>\r\n\r\n            <h4 class="sortButton">Priority</h4>\r\n            <h4 class="sortButton">Added</h4>\r\n            <h4 class="sortButton">Title</h4>\r\n          </nav>';
+  '          <nav id="todoNavTop">\r\n            <div id="displayByProject">\r\n              <h4 class="bold">View By Project</h4>\r\n              <select id="displayByProjectSelect">\r\n                <option value="all">All</option>\r\n                <option value="School">School</option>\r\n                <option value="Work">Todo List</option>\r\n              </select>\r\n            </div>\r\n            <h4 class="bold">Sort By:</h4>\r\n            <h4 data-sort="dueDate" class="sortButton">Due</h4>\r\n\r\n            <h4 data-sort="priority" class="sortButton">Priority</h4>\r\n            <h4 data-sort="dateAdded" class="sortButton">Added</h4>\r\n            <h4 data-sort="title" class="sortButton">Title</h4>\r\n          </nav>';
 
 let completedTodosNavHtml =
   '      <hr />\r\n          <nav id="clearCompletedTodosNav">\r\n            <h2>Clear completed</h2>\r\n            <img\r\n              id="clearCompleteButton"\r\n              class="button redGlow"\r\n              src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511969/Icons/005-trash_kbzvla.png"\r\n              alt="Delete"\r\n            />\r\n          </nav>';
@@ -66,184 +65,6 @@ function displayAddEditPage() {
 }
 
 //#endregion display functions
-
-//#region to-do Page
-
-const addButton = document.getElementById("addButton");
-addButton.addEventListener("click", () => {
-  displayAddEditPage();
-  clearForm();
-
-  populateProjectSelections();
-});
-
-//#region doneUnDoneButtons
-let doneUnDoneButtons = [];
-function getDoneUnDoneButtonsNodeList() {
-  doneUnDoneButtons = document.querySelectorAll(".doneUnDoneButtons");
-}
-function addListenersToDoneUnDoneButtons() {
-  doneUnDoneButtons.forEach((button) => {
-    button.addEventListener("click", () => triggerToggleComplete(button));
-  });
-}
-function triggerToggleComplete(button) {
-  todoArray[button.dataset.index].toggleComplete();
-  render();
-}
-
-//#endregion doneUnDoneButtons
-
-//#region notesButtons
-let notesButtons = [];
-function getNotesButtonNodeList() {
-  notesButtons = document.querySelectorAll(".notesButton");
-}
-function addListenersNotesButtonsNodeList() {
-  notesButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      displayNotesPage();
-      populateNotesPage(button);
-    });
-  });
-}
-
-//#endregion notesButtons
-
-function updateAllTodoPageQuerySelectorsAndListeners() {
-  getNotesButtonNodeList();
-  addListenersNotesButtonsNodeList();
-  getDoneUnDoneButtonsNodeList();
-  addListenersToDoneUnDoneButtons();
-}
-
-//#endregion to-do Page
-
-//#region addEditPage
-
-//#region addEditPage querySelectors
-const titleInput = document.getElementById("titleInput");
-const selectProject = document.getElementById("selectProject");
-const addNewProjectInput = document.getElementById("addNewProjectInput");
-const dueDate = document.getElementById("dueDate");
-const priority = document.getElementById("priority");
-const notesInput = document.getElementById("notesInput");
-const saveButton = document.getElementById("saveButton");
-const addEditBackButton = document.getElementById("addEditBackButton");
-const addEditDeleteButton = document.getElementById("addEditDeleteButton");
-//#endregion
-
-//#region addEditPage eventListeners
-titleInput.addEventListener("input", () => toggleSaveAndDeleteButtonDisplay());
-
-saveButton.addEventListener("click", () => {
-  displayTodoPage();
-
-  saveButton.classList.add("hide");
-});
-
-addEditBackButton.addEventListener("click", () => {
-  displayTodoPage();
-});
-
-addEditDeleteButton.addEventListener("click", () => {
-  displayDeleteTodoPage();
-  displayTodoTitle();
-});
-//#endregion
-
-//#region addEditPage functions
-function toggleSaveAndDeleteButtonDisplay() {
-  if (titleInput.value !== "") {
-    saveButton.classList.remove("hide");
-    addEditDeleteButton.classList.remove("hide");
-  } else {
-    saveButton.classList.add("hide");
-    addEditDeleteButton.classList.add("hide");
-  }
-}
-
-function clearForm() {
-  titleInput.value = "";
-  addNewProjectInput.value = "";
-  dueDate.value = "";
-  priority.value = "";
-  notesInput.value = "";
-}
-
-function displayTodoTitle() {
-  todoNameDeleteMessage.textContent = titleInput.value;
-}
-
-//create an array of projects
-
-function createProjectList() {
-  let projectsArray = [];
-
-  todoArray.forEach((todo) => {
-    if (!projectsArray.includes(todo.project)) {
-      projectsArray.push(todo.project);
-    }
-  });
-  projectsArray.push("None");
-  return projectsArray;
-}
-//filter it so there is only one of each
-
-function populateProjectSelections() {
-  selectProject.innerHTML =
-    ' <option value="" disabled selected>\r\n                Select Existing Project\r\n              </option>';
-  let projects = createProjectList();
-  projects.forEach((project) => {
-    let option = document.createElement("option");
-    option.value = project;
-    option.innerHTML = project;
-    selectProject.appendChild(option);
-  });
-}
-
-//#endregion
-
-//#endregion
-
-//#region deletePage
-const todoNameDeleteMessage = document.getElementById("todoNameDeleteMessage");
-const deletePageBackButton = document.getElementById("deletePageBackButton");
-const deletePageDeleteButton = document.getElementById(
-  "deletePageDeleteButton"
-);
-
-deletePageBackButton.addEventListener("click", () => {
-  displayAddEditPage();
-});
-
-deletePageDeleteButton.addEventListener("click", () => {
-  displayTodoPage();
-});
-//#endregion deletePage
-
-//#region notes Page
-const notesPageBackButton = document.getElementById("notesPageBackButton");
-const notesPageTodoTitle = document.getElementById("notesPageTodoTitle");
-const notesPageNotes = document.getElementById("notesPageNotes");
-
-console.log(notesPageBackButton);
-notesPageBackButton.addEventListener("click", () => displayTodoPage());
-
-function populateNotesPage(button) {
-  addTitleToNotesPage(button);
-  addNotesToNotesPage(button);
-}
-
-function addTitleToNotesPage(button) {
-  notesPageTodoTitle.textContent = todoArray[button.dataset.index].title;
-}
-
-function addNotesToNotesPage(button) {
-  notesPageNotes.textContent = todoArray[button.dataset.index].notes;
-}
-
-//#endregion notes Page
 
 //#region render section
 
@@ -476,6 +297,222 @@ function checkForEmpty(value) {
 }
 
 //#endregion
+
+//#region to-do Page
+
+const addButton = document.getElementById("addButton");
+
+let clearCompleteButton;
+
+function getClearCompleteButtonDomElement() {
+  clearCompleteButton = document.getElementById("clearCompleteButton");
+}
+addButton.addEventListener("click", () => {
+  displayAddEditPage();
+  clearForm();
+
+  populateProjectSelections();
+});
+function addEventListenerToclearCompleteButton() {
+  clearCompleteButton.addEventListener("click", () => {
+    clearCompletedTodos();
+    render();
+  });
+}
+//#region sortButton Section
+let sortButtonNodeList;
+
+function getSortButtonNodeList() {
+  sortButtonNodeList = document.querySelectorAll(".sortButton");
+}
+function addListenersToSortButtons() {
+  sortButtonNodeList.forEach((button) => {
+    button.addEventListener("click", () => {
+      sortArray(button.dataset.sort);
+      render();
+    });
+  });
+}
+
+// function displayPage(pageToDisplay) {
+//   pageToDisplay.classList.remove("hide");
+//   pagesArray.forEach((page) => {
+//     if (page !== pageToDisplay) {
+//       page.classList.add("hide");
+//     }
+//   });
+// }
+
+//#region doneUnDoneButtons
+let doneUnDoneButtons = [];
+function getDoneUnDoneButtonsNodeList() {
+  doneUnDoneButtons = document.querySelectorAll(".doneUnDoneButtons");
+}
+function addListenersToDoneUnDoneButtons() {
+  doneUnDoneButtons.forEach((button) => {
+    button.addEventListener("click", () => triggerToggleComplete(button));
+  });
+}
+function triggerToggleComplete(button) {
+  todoArray[button.dataset.index].toggleComplete();
+  render();
+}
+
+//#endregion doneUnDoneButtons
+
+//#region notesButtons
+let notesButtons = [];
+function getNotesButtonNodeList() {
+  notesButtons = document.querySelectorAll(".notesButton");
+}
+function addListenersToNotesButtons() {
+  notesButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      displayNotesPage();
+      populateNotesPage(button);
+    });
+  });
+}
+
+//#endregion notesButtons
+
+function updateAllTodoPageQuerySelectorsAndListeners() {
+  getNotesButtonNodeList();
+  addListenersToNotesButtons();
+  getDoneUnDoneButtonsNodeList();
+  addListenersToDoneUnDoneButtons();
+  getClearCompleteButtonDomElement();
+  addEventListenerToclearCompleteButton();
+  getSortButtonNodeList();
+  addListenersToSortButtons();
+}
+
+//#endregion to-do Page
+
+//#region addEditPage
+
+//#region addEditPage querySelectors
+const titleInput = document.getElementById("titleInput");
+const selectProject = document.getElementById("selectProject");
+const addNewProjectInput = document.getElementById("addNewProjectInput");
+const dueDate = document.getElementById("dueDate");
+const priority = document.getElementById("priority");
+const notesInput = document.getElementById("notesInput");
+const saveButton = document.getElementById("saveButton");
+const addEditBackButton = document.getElementById("addEditBackButton");
+const addEditDeleteButton = document.getElementById("addEditDeleteButton");
+//#endregion
+
+//#region addEditPage eventListeners
+titleInput.addEventListener("input", () => toggleSaveAndDeleteButtonDisplay());
+
+saveButton.addEventListener("click", () => {
+  displayTodoPage();
+
+  saveButton.classList.add("hide");
+});
+
+addEditBackButton.addEventListener("click", () => {
+  displayTodoPage();
+});
+
+addEditDeleteButton.addEventListener("click", () => {
+  displayDeleteTodoPage();
+  displayTodoTitle();
+});
+//#endregion
+
+//#region addEditPage functions
+function toggleSaveAndDeleteButtonDisplay() {
+  if (titleInput.value !== "") {
+    saveButton.classList.remove("hide");
+    addEditDeleteButton.classList.remove("hide");
+  } else {
+    saveButton.classList.add("hide");
+    addEditDeleteButton.classList.add("hide");
+  }
+}
+
+function clearForm() {
+  titleInput.value = "";
+  addNewProjectInput.value = "";
+  dueDate.value = "";
+  priority.value = "";
+  notesInput.value = "";
+}
+
+function displayTodoTitle() {
+  todoNameDeleteMessage.textContent = titleInput.value;
+}
+
+//create an array of projects
+
+function createProjectList() {
+  let projectsArray = [];
+
+  todoArray.forEach((todo) => {
+    if (!projectsArray.includes(todo.project)) {
+      projectsArray.push(todo.project);
+    }
+  });
+  projectsArray.push("None");
+  return projectsArray;
+}
+//filter it so there is only one of each
+
+function populateProjectSelections() {
+  selectProject.innerHTML =
+    ' <option value="" disabled selected>\r\n                Select Existing Project\r\n              </option>';
+  let projects = createProjectList();
+  projects.forEach((project) => {
+    let option = document.createElement("option");
+    option.value = project;
+    option.innerHTML = project;
+    selectProject.appendChild(option);
+  });
+}
+
+//#endregion
+
+//#endregion
+
+//#region deletePage
+const todoNameDeleteMessage = document.getElementById("todoNameDeleteMessage");
+const deletePageBackButton = document.getElementById("deletePageBackButton");
+const deletePageDeleteButton = document.getElementById(
+  "deletePageDeleteButton"
+);
+
+deletePageBackButton.addEventListener("click", () => {
+  displayAddEditPage();
+});
+
+deletePageDeleteButton.addEventListener("click", () => {
+  displayTodoPage();
+});
+//#endregion deletePage
+
+//#region notes Page
+const notesPageBackButton = document.getElementById("notesPageBackButton");
+const notesPageTodoTitle = document.getElementById("notesPageTodoTitle");
+const notesPageNotes = document.getElementById("notesPageNotes");
+
+notesPageBackButton.addEventListener("click", () => displayTodoPage());
+
+function populateNotesPage(button) {
+  addTitleToNotesPage(button);
+  addNotesToNotesPage(button);
+}
+
+function addTitleToNotesPage(button) {
+  notesPageTodoTitle.textContent = todoArray[button.dataset.index].title;
+}
+
+function addNotesToNotesPage(button) {
+  notesPageNotes.textContent = todoArray[button.dataset.index].notes;
+}
+
+//#endregion notes Page
 
 //#region update querySelectors
 

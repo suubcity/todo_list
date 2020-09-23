@@ -1,15 +1,47 @@
-import { test } from "./domManipulation";
+export function clearCompletedTodos() {
+  todoArray = todoArray.filter((todo) => todo.completed === false);
+}
 
-//this module can get all the data from the form and create the object and edit it
+export function sortArray(sortBy) {
+  if (sortBy === "priority") {
+    todoArray.sort((a, b) => {
+      switch (a[sortBy]) {
+        case "high":
+          a = "a";
+          break;
+        case "medium":
+          a = "b";
+          break;
+        case "low":
+          a = "c";
+          break;
+      }
+      switch (b[sortBy]) {
+        case "high":
+          b = "a";
+          break;
+        case "medium":
+          b = "b";
+          break;
+        case "low":
+          b = "c";
+          break;
+      }
+
+      return a > b ? 1 : -1;
+    });
+  } else {
+    todoArray.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1));
+  }
+}
+
 export let todoArray = [];
 
+//this module can get all the data from the form and create the object and edit it
+
 //#region buttons querySelectors
-const ADD_BUTTON = document.getElementById("addButton");
 const saveButton = document.getElementById("saveButton");
-const ADD_EDIT_BACK_BUTTON = document.getElementById("addEditBackButton");
-const ADD_EDIT_DELETE_BUTTON = document.getElementById("addEditDeleteButton");
-const DELETE_PAGE_BACK_BUTTON = document.getElementById("deletePageBackButton");
-const DELETE_PAGE_DELETE_BUTTON = document.getElementById(
+const deletePageDeleteButton = document.getElementById(
   "deletePageDeleteButton"
 );
 
@@ -45,7 +77,6 @@ const todoFactory = () => {
     completed: false,
     toggleComplete: function () {
       this.completed = this.completed === false ? true : false;
-     
     },
   };
 };
@@ -70,14 +101,13 @@ const testTodoFactory = (
     completed,
     toggleComplete: function () {
       this.completed = this.completed === false ? true : false;
-      
     },
   };
 };
 
 todoArray.push(
   testTodoFactory(
-    "Shopping",
+    "AShopping",
     "Home",
     "2020-10-13",
     "low",
@@ -88,9 +118,9 @@ todoArray.push(
 
 todoArray.push(
   testTodoFactory(
-    "Shopping",
+    "BShopping",
     "Home",
-    "2020-09-01",
+    "2020-10-14",
     "high",
     "get her done",
     false
@@ -99,7 +129,7 @@ todoArray.push(
 
 todoArray.push(
   testTodoFactory(
-    "Shopping",
+    "ZShopping",
     "Home",
     "2020-12-01",
     "medium",
@@ -113,14 +143,14 @@ todoArray.push(
     "Shopping",
     "Home",
     "2020-09-01",
-    "Medium",
+    "medium",
     "get her done",
     true
   )
 );
 
 todoArray.push(
-  testTodoFactory("Drive", "Home", "2020-09-01", "High", "get her done", true)
+  testTodoFactory("Drive", "Home", "2020-09-01", "high", "get her done", true)
 );
 
 //#endregion
