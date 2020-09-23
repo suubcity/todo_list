@@ -24,7 +24,6 @@ const addEditPage = document.getElementById("addEditPage");
 //#region page display functions
 let pagesArray = [
   deleteTodoPage,
-  clearCompletedPage,
   notesPage,
   todoPage,
   addEditPage,
