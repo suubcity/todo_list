@@ -1,3 +1,8 @@
+//todo edit button
+//todo view by project
+//todo sort by
+//todo clear compleated
+
 import { todoArray } from "./objectFunctions";
 import { format, parseISO } from "date-fns";
 
@@ -40,12 +45,15 @@ function displayPage(pageToDisplay) {
 
 function displayDeleteTodoPage() {
   displayPage(deleteTodoPage);
+  addButton.classList.add("hide");
 }
 function displayClearcompletedPage() {
   displayPage(clearCompletedPage);
+  addButton.classList.add("hide");
 }
 function displayNotesPage() {
   displayPage(notesPage);
+  addButton.classList.add("hide");
 }
 function displayTodoPage() {
   displayPage(todoPage);
@@ -54,6 +62,7 @@ function displayTodoPage() {
 }
 function displayAddEditPage() {
   displayPage(addEditPage);
+  addButton.classList.add("hide");
 }
 
 //#endregion display functions
@@ -64,7 +73,7 @@ const addButton = document.getElementById("addButton");
 addButton.addEventListener("click", () => {
   displayAddEditPage();
   clearForm();
-  addButton.classList.add("hide");
+
   populateProjectSelections();
 });
 
@@ -94,6 +103,7 @@ function addListenersNotesButtonsNodeList() {
   notesButtons.forEach((button) => {
     button.addEventListener("click", () => {
       displayNotesPage();
+      populateNotesPage(button);
     });
   });
 }
@@ -217,6 +227,22 @@ const notesPageBackButton = document.getElementById("notesPageBackButton");
 const notesPageTodoTitle = document.getElementById("notesPageTodoTitle");
 const notesPageNotes = document.getElementById("notesPageNotes");
 
+console.log(notesPageBackButton);
+notesPageBackButton.addEventListener("click", () => displayTodoPage());
+
+function populateNotesPage(button) {
+  addTitleToNotesPage(button);
+  addNotesToNotesPage(button);
+}
+
+function addTitleToNotesPage(button) {
+  notesPageTodoTitle.textContent = todoArray[button.dataset.index].title;
+}
+
+function addNotesToNotesPage(button) {
+  notesPageNotes.textContent = todoArray[button.dataset.index].notes;
+}
+
 //#endregion notes Page
 
 //#region render section
@@ -260,16 +286,17 @@ function renderTodos(todo, index) {
   imgNotes.src =
     "https://res.cloudinary.com/dli7mlkdu/image/upload/v1599514254/Icons/info_q23uvm.png";
   imgNotes.alt = "notes";
+  imgNotes.dataset.index = index;
 
   const todoInner = document.createElement("div");
   todoInner.classList.add("todoInner");
 
   const title = document.createElement("h2");
-  title.classList.add("todoNotes", "title");
+  title.classList.add("todoInfo", "title");
   title.textContent = todo.title;
 
   const due = document.createElement("h5");
-  due.classList.add("todoNotes", "due");
+  due.classList.add("todoInfo", "due");
   changeColorByDate(todo, due);
 
   if (checkForEmpty(todo.dueDate)) {
@@ -285,7 +312,7 @@ function renderTodos(todo, index) {
   }
 
   const priority = document.createElement("h5");
-  priority.classList.add("todoNotes", "priority");
+  priority.classList.add("todoInfo", "priority");
   if (checkForEmpty(todo.priority)) {
     priority.classList.add("hide");
   } else {
@@ -294,7 +321,7 @@ function renderTodos(todo, index) {
   }
 
   const dateAdded = document.createElement("h5");
-  dateAdded.classList.add("todoNotes", "dateAdded");
+  dateAdded.classList.add("todoInfo", "dateAdded");
   dateAdded.textContent = `Added: ${format(
     // parseISO(todo.dateAdded),
     todo.dateAdded,
@@ -302,7 +329,7 @@ function renderTodos(todo, index) {
   )}`;
 
   const project = document.createElement("h5");
-  project.classList.add("todoNotes", "project");
+  project.classList.add("todoInfo", "project");
   if (todo.project === "None" || checkForEmpty(todo.project)) {
     project.classList.add("hide");
   } else {
@@ -343,11 +370,11 @@ function rendercompletedTodos(todo, index) {
   todoInner.classList.add("todoInner");
 
   const title = document.createElement("h2");
-  title.classList.add("todoNotes", "title");
+  title.classList.add("todoInfo", "title");
   title.textContent = todo.title;
 
   const due = document.createElement("h5");
-  due.classList.add("todoNotes", "due");
+  due.classList.add("todoInfo", "due");
   if (checkForEmpty(todo.dueDate)) {
     due.classList.add("hide");
   } else {
@@ -359,7 +386,7 @@ function rendercompletedTodos(todo, index) {
   }
 
   const priority = document.createElement("h5");
-  priority.classList.add("todoNotes", "priority");
+  priority.classList.add("todoInfo", "priority");
   if (todo.project === "None" || checkForEmpty(todo.project)) {
     priority.classList.add("hide");
   } else {
@@ -367,14 +394,14 @@ function rendercompletedTodos(todo, index) {
   }
 
   const dateAdded = document.createElement("h5");
-  dateAdded.classList.add("todoNotes", "dateAdded");
+  dateAdded.classList.add("todoInfo", "dateAdded");
   dateAdded.textContent = `Added: ${format(
     todo.dateAdded,
     "eeee do-MMM-yyyy"
   )}`;
 
   const project = document.createElement("h5");
-  project.classList.add("todoNotes", "project");
+  project.classList.add("todoInfo", "project");
   if (checkForEmpty(todo.project)) {
     project.classList.add("hide");
   } else {
