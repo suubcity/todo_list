@@ -58,10 +58,17 @@ const notesInput = document.getElementById("notesInput");
 //#endregion
 
 //#region event listeners
-saveButton.addEventListener("click", () => {
-  todoArray.push(todoFactory());
+export function saveTodo(todoIndex) {
+  if (todoIndex !== "") {
+todoArray.splice(todoIndex, 1);
+todoArray.push(todoFactory());
+    todoIndex = "";
+  } else {
+    todoArray.push(todoFactory());
+  }
+
   console.table(todoArray);
-});
+};
 //#endregion
 
 //#region functions

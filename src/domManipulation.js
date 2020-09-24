@@ -1,12 +1,17 @@
-//todo edit button
-//todo view by project
+//todo set up delete button to delete edited todo
+//todo display the save and delete buttons
 
-import { clearCompletedTodos, sortArray, todoArray } from "./objectFunctions";
-import { format, parseISO } from "date-fns";
+import {
+  clearCompletedTodos,
+  sortArray,
+  todoArray,
+  saveTodo,
+} from "./objectFunctions";
+import { format, parseISO, set } from "date-fns";
 
 //#region html templates
 let todoNavHtml =
-  '          <nav id="todoNavTop">\r\n            <div id="displayByProject">\r\n              <h4 class="bold">View By Project</h4>\r\n              <select id="displayByProjectSelect">\r\n                <option value="all">All</option>\r\n                <option value="School">School</option>\r\n                <option value="Work">Todo List</option>\r\n              </select>\r\n            </div>\r\n            <h4 class="bold">Sort By:</h4>\r\n            <h4 data-sort="dueDate" class="sortButton">Due</h4>\r\n\r\n            <h4 data-sort="priority" class="sortButton">Priority</h4>\r\n            <h4 data-sort="dateAdded" class="sortButton">Added</h4>\r\n            <h4 data-sort="title" class="sortButton">Title</h4>\r\n          </nav>';
+  '          <nav id="todoNavTop">\r\n        <h4 class="bold">Sort By:</h4>\r\n            <h4 data-sort="dueDate" class="sortButton">Due</h4>\r\n\r\n            <h4 data-sort="priority" class="sortButton">Priority</h4>\r\n            <h4 data-sort="dateAdded" class="sortButton">Added</h4>\r\n            <h4 data-sort="title" class="sortButton">Title</h4>\r\n          </nav>';
 
 let completedTodosNavHtml =
   '      <hr />\r\n          <nav id="clearCompletedTodosNav">\r\n            <h2>Clear completed</h2>\r\n            <img\r\n              id="clearCompleteButton"\r\n              class="button redGlow"\r\n              src="https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511969/Icons/005-trash_kbzvla.png"\r\n              alt="Delete"\r\n            />\r\n          </nav>';
@@ -93,10 +98,11 @@ function renderTodos(todo, index) {
   imgTick.dataset.index = index;
 
   const imgEdit = document.createElement("img");
-  imgEdit.classList.add("button", "editButton");
+  imgEdit.classList.add("button", "editButtons");
   imgEdit.src =
     "https://res.cloudinary.com/dli7mlkdu/image/upload/v1599511971/Icons/020-edit_lwkmwt.png";
   imgEdit.alt = "Edit";
+  imgEdit.dataset.index = index;
 
   const imgNotes = document.createElement("img");
   imgNotes.classList.add("button", "notesButton");
@@ -298,19 +304,6 @@ function checkForEmpty(value) {
 
 const addButton = document.getElementById("addButton");
 
-
-let displayByProjectSelect;
-function getDisplayByProjectSelectDomElement() {
-  displayByProjectSelect = document.getElementById("displayByProjectSelect");
-}
-//todo code here and inside render fucntion to only render todos that match select box
-//todo also need to populate box with current list of projects
-function addListenerTogetDisplayByProjects() {
-  displayByProjectSelect.addEventListener("change", () =>
-    alert(displayByProjectSelect.value)
-  );
-}
-
 let clearCompleteButton;
 function getClearCompleteButtonDomElement() {
   clearCompleteButton = document.getElementById("clearCompleteButton");
@@ -326,7 +319,7 @@ function addEventListenerToclearCompleteButton() {
     render();
   });
 }
-//#region sortButton Section
+//sortButton Section
 let sortButtonNodeList;
 
 function getSortButtonNodeList() {
@@ -340,7 +333,8 @@ function addListenersToSortButtons() {
     });
   });
 }
-//#region doneUnDoneButtons
+
+//doneUnDoneButtons Section
 let doneUnDoneButtons = [];
 function getDoneUnDoneButtonsNodeList() {
   doneUnDoneButtons = document.querySelectorAll(".doneUnDoneButtons");
@@ -355,9 +349,40 @@ function triggerToggleComplete(button) {
   render();
 }
 
-//#endregion doneUnDoneButtons
+//editButtons Section
+let editButtons = [];
+let todoIndex = "";
+function getEditButtonsNodeList() {
+  editButtons = document.querySelectorAll(".editButtons");
+}
+function addListenersToEditButtons() {
+  editButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      displayAddEditPage();
+      populateProjectSelectionsAddEditPage();
+      updateFormWithCurrentTodoInformation(button);
+      setIndexValue(button);
+      saveButton.classList.remove("hide");
+      addEditDeleteButton.classList.remove("hide");
+    });
+  });
+}
 
-//#region notesButtons
+function updateFormWithCurrentTodoInformation(button) {
+  let todo = todoArray[button.dataset.index];
+
+  titleInput.value = todo.title;
+  selectProject.value = todo.project;
+  dueDate.value = todo.dueDate;
+  priority.value = todo.priority;
+  notesInput.value = todo.notes;
+}
+
+function setIndexValue(button) {
+  todoIndex = button.dataset.index;
+}
+
+//notesButtons
 let notesButtons = [];
 function getNotesButtonNodeList() {
   notesButtons = document.querySelectorAll(".notesButton");
@@ -382,8 +407,8 @@ function updateAllTodoPageQuerySelectorsAndListeners() {
   addEventListenerToclearCompleteButton();
   getSortButtonNodeList();
   addListenersToSortButtons();
-  getDisplayByProjectSelectDomElement();
-  addListenerTogetDisplayByProjects();
+  getEditButtonsNodeList();
+  addListenersToEditButtons();
 }
 
 //#endregion to-do Page
@@ -406,9 +431,8 @@ const addEditDeleteButton = document.getElementById("addEditDeleteButton");
 titleInput.addEventListener("input", () => toggleSaveAndDeleteButtonDisplay());
 
 saveButton.addEventListener("click", () => {
+  saveTodo(todoIndex);
   displayTodoPage();
- 
-  
 });
 
 addEditBackButton.addEventListener("click", () => {
