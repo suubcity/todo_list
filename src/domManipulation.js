@@ -6,8 +6,9 @@ import {
   sortArray,
   todoArray,
   saveTodo,
+  deleteTodo,
 } from "./objectFunctions";
-import { format, parseISO, set } from "date-fns";
+import { format, parseISO } from "date-fns";
 
 //#region html templates
 let todoNavHtml =
@@ -511,6 +512,7 @@ deletePageBackButton.addEventListener("click", () => {
 });
 
 deletePageDeleteButton.addEventListener("click", () => {
+  deleteTodo(todoIndex);
   displayTodoPage();
 });
 //#endregion deletePage

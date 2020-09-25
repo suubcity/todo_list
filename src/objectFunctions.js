@@ -66,9 +66,16 @@ todoArray.push(todoFactory());
   } else {
     todoArray.push(todoFactory());
   }
+}
 
-  console.table(todoArray);
-};
+
+export function deleteTodo(todoIndex) {
+  if (todoIndex !== "") {
+todoArray.splice(todoIndex, 1);
+    todoIndex = "";
+  } 
+}
+
 //#endregion
 
 //#region functions
