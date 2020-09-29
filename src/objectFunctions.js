@@ -37,16 +37,6 @@ export function sortArray(sortBy) {
 
 export let todoArray = [];
 
-//this module can get all the data from the form and create the object and edit it
-
-//#region buttons querySelectors
-const saveButton = document.getElementById("saveButton");
-const deletePageDeleteButton = document.getElementById(
-  "deletePageDeleteButton"
-);
-
-//#endregion
-
 //#region Form Inputs querySelectors
 const titleInput = document.getElementById("titleInput");
 const selectProject = document.getElementById("selectProject");
